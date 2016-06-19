@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="Privacy.View.GuessView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Privacy.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding Source={StaticResource Locator},
+    Path=GuessViewModel}">
+
+    <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Style="{StaticResource TextBlockHeaderStyle}"
+                       Text="#Guess"/>
+            <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       TextWrapping="Wrap"
+                       Text="How many of your friends have... ?"
+                       FontSize="20"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="15,0,15,0"/>
+            <ComboBox Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      Style="{StaticResource ComboBoxStyle}"/>
+            <Button Grid.Row="3"
+                    Grid.Column="1"
+                    Style="{StaticResource ButtonStyle}"
+                    HorizontalContentAlignment="Left"
+                    Content="Apply"/>
+        </Grid>
+    </Grid>
+</Page>

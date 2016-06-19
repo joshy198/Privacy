@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="Privacy.View.CategoryView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Privacy.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding Source={StaticResource Locator},
+    Path=CategoryViewModel}">
+
+    <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Category" Style="{StaticResource TextBlockHeaderStyle}"/>
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Select a category" Style="{StaticResource TextBlockStyle}"/>
+            <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource ComboBoxStyle}"/>
+            <Button  Grid.Row="5" Grid.Column="1" Content="Start" HorizontalContentAlignment="Left" Style="{StaticResource ButtonStyle}"/>
+        </Grid>
+    </Grid>
+</Page>
