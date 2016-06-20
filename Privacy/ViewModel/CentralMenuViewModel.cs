@@ -11,16 +11,23 @@ namespace Privacy.ViewModel
     public class CentralMenuViewModel : ViewModelBase
     {
         private readonly INavigationService navigationService;
-        private bool showMenu;
-        public int MenuWidth { get { if (showMenu) return 0;return 150; } }
+        public bool ShowMenu { get; set;}
+        public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public CentralMenuViewModel(INavigationService navigationService)
         {
             this.navigationService = navigationService;
         }
         public void HambugerInteraction()
         {
-            showMenu = !showMenu;
-            System.Diagnostics.Debug.WriteLine("HambugerInteraction");
+            ShowMenu = !ShowMenu;
+        }
+        public void NavigateToJoinView()
+        {
+            navigationService.NavigateTo(Common.Navigation.Join);
+        }
+        public void NavigateToCategoryView()
+        {
+            navigationService.NavigateTo(Common.Navigation.Category);
         }
     }
 }

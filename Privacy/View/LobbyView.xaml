@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="Privacy.View.LobbyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Privacy.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding Source={StaticResource Locator},
+    Path=LobbyViewModel}">
+
+    <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="1.3*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Lobby" Style="{StaticResource TextBlockHeaderStyle}"/>
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontSize="25" Text="" ScrollViewer.VerticalScrollBarVisibility="Auto" Foreground="{StaticResource PrivacyFontColorBrush}"/>
+            <Button  Grid.Row="2" Grid.Column="1" Content="Start" HorizontalContentAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}"/>
+        </Grid>
+    </Grid>
+</Page>

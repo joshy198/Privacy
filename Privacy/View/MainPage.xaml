@@ -38,14 +38,17 @@
                 <ComboBox Grid.Row="3"
                           Grid.ColumnSpan="2"
                           x:Name="comboBox" 
-                          Style="{StaticResource ComboBoxStyle}"/>
+                          Style="{StaticResource ComboBoxStyle}"
+                          ItemsSource="{x:Bind VM.Languages, Mode=OneWay}"
+                          SelectedItem="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"/>
                 <TextBlock Grid.Row="4"
                            Grid.ColumnSpan="2"
                            Text="Name"
                            Style="{StaticResource TextBlockStyle}"/>
                 <TextBox Grid.Row="5"
                          Grid.ColumnSpan="2"
-                         Style="{StaticResource TextBoxStyle}"/>
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{x:Bind VM.UserName, Mode=TwoWay}"/>
                 <Button Grid.Row="7"
                         Grid.Column="1"
                         Style="{StaticResource ButtonStyle}"

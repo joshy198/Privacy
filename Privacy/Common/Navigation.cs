@@ -15,5 +15,7 @@ namespace Privacy.Common
         public static string Question = "Question";
         public static string Settings = "Settings";
         public static string CentralMenu = "CentralMenu";
+        public static string Lobby = "Lobby";
+        public static string Join = "Join";
     }
 }

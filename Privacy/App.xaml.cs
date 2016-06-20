@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -64,6 +65,13 @@ namespace Privacy
                 // Den Frame im aktuellen Fenster platzieren
                 Window.Current.Content = rootFrame;
             }
+            SystemNavigationManager.GetForCurrentView().BackRequested += AppBackRequested;
+
+            rootFrame.Navigated += (sender, args) =>
+            {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility
+                    = rootFrame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+            };
 
             if (e.PrelaunchActivated == false)
             {
@@ -77,6 +85,26 @@ namespace Privacy
                 // Sicherstellen, dass das aktuelle Fenster aktiv ist
                 Window.Current.Activate();
             }
+        }
+        public event EventHandler<BackRequestedEventArgs> OnBackRequested;
+
+        private void AppBackRequested(object sender, BackRequestedEventArgs e)
+        {
+
+            OnBackRequested?.Invoke(this, e);
+
+            if (!e.Handled)
+            {
+                // Default is to navigate back within the Frame
+                Frame frame = Window.Current.Content as Frame;
+                if (frame.CanGoBack)
+                {
+                    frame.GoBack();
+                    // Signal handled so that system doesn't navigate back through app stack
+                    e.Handled = true;
+                }
+            }
+
         }
 
         /// <summary>

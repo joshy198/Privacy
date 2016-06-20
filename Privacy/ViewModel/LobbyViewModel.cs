@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Privacy.ViewModel
 {
-    public class QuestionViewModel :ViewModelBase
+    public class LobbyViewModel:ViewModelBase
     {
         private readonly INavigationService navigationService;
-        public QuestionViewModel(INavigationService navigationService)
+        public LobbyViewModel(INavigationService navigationService)
         {
             this.navigationService = navigationService;
         }

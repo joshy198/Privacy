@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="Privacy.View.CentralMenuView"
+    x:Class="Privacy.View.JoinGameView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Privacy.View"
@@ -7,13 +7,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator},
-    Path=CentralMenuViewModel}">
+    Path=JoinGameViewModel}">
+
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Canvas Grid.Row="0" Grid.Column="0" Canvas.ZIndex="999" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Button
-                    Grid.Column="1"
                     Style="{StaticResource BurgerBackgroundButton}"
                     Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
+            </Canvas>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -38,29 +46,35 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
-                <RowDefinition/>
+                <RowDefinition Height="0.8*"/>
                 <RowDefinition Height="64"/>
-                <RowDefinition Height="1.3*"/>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Text="#Menu"
-                       Style="{StaticResource TextBlockHeaderStyle}"/>
-            <Button Grid.Row="1"
-                    Grid.Column="1"
-                    Style="{StaticResource ButtonStyle}"
-                    Content="Create" HorizontalContentAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Click="{x:Bind VM.NavigateToCategoryView}"/>
-            <Button Grid.Row="3"
-                    Grid.Column="0" Style="{StaticResource ButtonStyle}"
-                    Content="Join" HorizontalContentAlignment="Right"
-                    VerticalAlignment="Top"
-                    Click="{x:Bind VM.NavigateToJoinView}"/>
+                           Grid.ColumnSpan="2"
+                           Text="#Join"
+                           Style="{StaticResource TextBlockHeaderStyle}"/>
+            <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           Text="Name"
+                           Style="{StaticResource TextBlockStyle}"/>
+            <TextBox Grid.Row="3"
+                     Grid.ColumnSpan="2"
+                     VerticalAlignment="Top"
+                     Style="{StaticResource TextBoxStyle}"
+                     Text="{Binding GameId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Row="4"
+                        Grid.Column="1"
+                        Style="{StaticResource ButtonStyle}"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Left"
+                        Content="Apply"
+                    Click="{x:Bind VM.NavigateToQuestionView}"/>
         </Grid>
     </Grid>
 </Page>

@@ -96,6 +96,18 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Navigation.cs" />
+    <Compile Include="Converters\BrugermenuButtonForegroundConverter.cs" />
+    <Compile Include="Converters\BurgermenuButtonBackgroundConverter.cs" />
+    <Compile Include="Converters\BurgerMenuSizeConverter.cs" />
+    <Compile Include="Converters\ButtonVisibilityConverter.cs" />
+    <Compile Include="Converters\LanguageToObjectConverter.cs" />
+    <Compile Include="Model\Group.cs" />
+    <Compile Include="Model\ID.cs" />
+    <Compile Include="Model\Language.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Question.cs" />
+    <Compile Include="Model\Statistic.cs" />
+    <Compile Include="Services\ConcreteDataService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\LocalStorageService.cs" />
@@ -103,6 +115,8 @@
     <Compile Include="ViewModel\CentralMenuViewModel.cs" />
     <Compile Include="ViewModel\ContinueViewModel.cs" />
     <Compile Include="ViewModel\GuessViewModel.cs" />
+    <Compile Include="ViewModel\JoinGameViewModel.cs" />
+    <Compile Include="ViewModel\LobbyViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\QuestionViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
@@ -118,6 +132,12 @@
     </Compile>
     <Compile Include="View\GuessView.xaml.cs">
       <DependentUpon>GuessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\JoinGameView.xaml.cs">
+      <DependentUpon>JoinGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LobbyView.xaml.cs">
+      <DependentUpon>LobbyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -165,6 +185,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GuessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\JoinGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LobbyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
