@@ -12,16 +12,47 @@
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="64"/>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="#Join"
+                           Style="{StaticResource TextBlockHeaderStyle}"/>
+            <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           Text="Game ID"
+                           Style="{StaticResource TextBlockStyle}"/>
+            <TextBox Grid.Row="3"
+                     Grid.ColumnSpan="2"
+                     VerticalAlignment="Top"
+                     Style="{StaticResource TextBoxStyle}"
+                     Text="{Binding GameId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Row="4"
+                        Grid.Column="1"
+                        Style="{StaticResource ButtonStyle}"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Left"
+                        Content="Apply"
+                    Click="{x:Bind VM.NavigateToQuestionView}"/>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Canvas Grid.Row="0" Grid.Column="0" Canvas.ZIndex="999" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Button
                     Style="{StaticResource BurgerBackgroundButton}"
                     Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
-            </Canvas>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -42,39 +73,6 @@
                       HorizontalContentAlignment="Left"
                       Background="{StaticResource PrivacySystemColorBrush}">
             </ListView>
-        </Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="0.8*"/>
-                <RowDefinition Height="64"/>
-                <RowDefinition Height="0.6*"/>
-                <RowDefinition Height="1.5*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Text="#Join"
-                           Style="{StaticResource TextBlockHeaderStyle}"/>
-            <TextBlock Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           Text="Name"
-                           Style="{StaticResource TextBlockStyle}"/>
-            <TextBox Grid.Row="3"
-                     Grid.ColumnSpan="2"
-                     VerticalAlignment="Top"
-                     Style="{StaticResource TextBoxStyle}"
-                     Text="{Binding GameId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Grid.Row="4"
-                        Grid.Column="1"
-                        Style="{StaticResource ButtonStyle}"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Left"
-                        Content="Apply"
-                    Click="{x:Bind VM.NavigateToQuestionView}"/>
         </Grid>
     </Grid>
 </Page>

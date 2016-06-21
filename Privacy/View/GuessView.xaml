@@ -14,7 +14,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition/>
                 <RowDefinition Height="0.5*"/>
                 <RowDefinition/>
@@ -35,14 +36,24 @@
                        TextAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="15,0,15,0"/>
-            <ComboBox Grid.Row="2"
-                      Grid.ColumnSpan="2"
-                      Style="{StaticResource ComboBoxStyle}"/>
-            <Button Grid.Row="3"
+            <TextBlock Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       Style="{StaticResource TextBlockStyle}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{x:Bind VM.SelectedAmmountOfPlayers, Mode=TwoWay}"/>
+            <Slider Grid.Row="3"
+                    Grid.ColumnSpan="2" 
+                    VerticalAlignment="Center"
+                    Padding="15,0,15,0"
+                    Value="{Binding SelectedAmmountOfPlayers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    Minimum="0" Maximum="{Binding VM.NumberOfPlayers,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Row="4"
                     Grid.Column="1"
                     Style="{StaticResource ButtonStyle}"
                     HorizontalContentAlignment="Left"
-                    Content="Apply"/>
+                    Content="Apply"
+                    Click="{x:Bind VM.NavigateToQuestion}"/>
         </Grid>
     </Grid>
 </Page>

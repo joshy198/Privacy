@@ -27,6 +27,10 @@ namespace Privacy.View
         {
             this.InitializeComponent();
         }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            VM.Mode = e.Parameter as string;
+        }
         private LobbyViewModel VM => DataContext as LobbyViewModel;
     }
 }

@@ -159,6 +159,7 @@
             <Setter Property="Margin" Value="15,0,15,0"/>
             <Setter Property="FontSize" Value="25"/>
             <Setter Property="MaxLength" Value="23"/>
+            <Setter Property="InputScope" Value="Number"/>
         </Style>
         <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Foreground" Value="{StaticResource PrivacyFontColorBrush}"/>

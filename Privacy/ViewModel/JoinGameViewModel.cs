@@ -32,7 +32,7 @@ namespace Privacy.ViewModel
         }
         public void NavigateToQuestionView()
         {
-            navigationService.NavigateTo(Common.Navigation.Question);
+            navigationService.NavigateTo(Common.Navigation.Question,Common.Mode.IsClient);
         }
     }
 }

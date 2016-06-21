@@ -10,32 +10,6 @@
     Path=CentralMenuViewModel}">
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
-            <Button
-                    Grid.Column="1"
-                    Style="{StaticResource BurgerBackgroundButton}"
-                    Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
-        </Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="64"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Row="0"
-                    Style="{StaticResource HamburgerButtonStyle}"
-                    Background="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerBackground}}"
-                    Foreground="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerForeground}}"
-                    Click="{x:Bind VM.HambugerInteraction}"/>
-            <ListView Grid.Row="1"
-                      Width="{x:Bind VM.MenuSize, Mode=OneWay}"
-                      HorizontalAlignment="Left" 
-                      HorizontalContentAlignment="Left"
-                      Background="{StaticResource PrivacySystemColorBrush}">
-            </ListView>
-        </Grid>
-        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
                 <RowDefinition/>
@@ -61,6 +35,32 @@
                     Content="Join" HorizontalContentAlignment="Right"
                     VerticalAlignment="Top"
                     Click="{x:Bind VM.NavigateToJoinView}"/>
+        </Grid>
+        <Grid>
+            <Button
+                    Grid.Column="1"
+                    Style="{StaticResource BurgerBackgroundButton}"
+                    Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="64"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0"
+                    Style="{StaticResource HamburgerButtonStyle}"
+                    Background="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerBackground}}"
+                    Foreground="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerForeground}}"
+                    Click="{x:Bind VM.HambugerInteraction}"/>
+            <ListView Grid.Row="1"
+                      Width="{x:Bind VM.MenuSize, Mode=OneWay}"
+                      HorizontalAlignment="Left" 
+                      HorizontalContentAlignment="Left"
+                      Background="{StaticResource PrivacySystemColorBrush}">
+            </ListView>
         </Grid>
     </Grid>
 </Page>

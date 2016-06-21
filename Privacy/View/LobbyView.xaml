@@ -22,7 +22,13 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Lobby" Style="{StaticResource TextBlockHeaderStyle}"/>
             <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontSize="25" Text="" ScrollViewer.VerticalScrollBarVisibility="Auto" Foreground="{StaticResource PrivacyFontColorBrush}"/>
-            <Button  Grid.Row="2" Grid.Column="1" Content="Start" HorizontalContentAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}"/>
+            <Button  Grid.Row="2"
+                     Grid.Column="1" 
+                     Content="Start"
+                     HorizontalContentAlignment="Left"
+                     VerticalAlignment="Top"
+                     Style="{StaticResource ButtonStyle}"
+                     Click="{x:Bind VM.NavigateToQuestionView}"/>
         </Grid>
     </Grid>
 </Page>

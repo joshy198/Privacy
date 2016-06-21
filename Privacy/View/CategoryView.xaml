@@ -27,7 +27,12 @@
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Category" Style="{StaticResource TextBlockHeaderStyle}"/>
             <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Select a category" Style="{StaticResource TextBlockStyle}"/>
             <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource ComboBoxStyle}"/>
-            <Button  Grid.Row="5" Grid.Column="1" Content="Start" HorizontalContentAlignment="Left" Style="{StaticResource ButtonStyle}"/>
+            <Button  Grid.Row="5"
+                     Grid.Column="1" 
+                     Content="Start"
+                     HorizontalContentAlignment="Left" 
+                     Style="{StaticResource ButtonStyle}"
+                     Click="{x:Bind VM.NavigateToLobby}"/>
         </Grid>
     </Grid>
 </Page>

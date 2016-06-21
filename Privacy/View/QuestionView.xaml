@@ -24,8 +24,20 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource TextBlockHeaderStyle}" Text="#Question"/>
             <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="Have you ever developed such a shitty app." FontSize="20" Grid.ColumnSpan="2" TextAlignment="Center" VerticalAlignment="Center" Margin="15,0,15,0"/>
-            <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource ButtonStyle}" Content="Yes" VerticalAlignment="Bottom" HorizontalContentAlignment="Left"/>
-            <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource ButtonStyle}" Content="Yes" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
+            <Button Grid.Row="2"
+                    Grid.Column="1" 
+                    Style="{StaticResource ButtonStyle}"
+                    Content="Yes"
+                    VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Left"
+                    Click="{x:Bind VM.NavigateToYes}"/>
+            <Button Grid.Row="4"
+                    Grid.Column="0"
+                    Style="{StaticResource ButtonStyle}"
+                    Content="No"
+                    HorizontalContentAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="{x:Bind VM.NavigateToNo}"/>
         </Grid>
     </Grid>
 </Page>

@@ -17,7 +17,7 @@ namespace Privacy.ViewModel
         }
         public void NavigateToLobby()
         {
-            navigationService.NavigateTo(Common.Navigation.Lobby);
+            navigationService.NavigateTo(Common.Navigation.Lobby,Common.Mode.HostStart);
         }
     }
 }
