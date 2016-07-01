@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
+using Privacy.Model;
+using Privacy.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,9 @@ namespace Privacy.ViewModel
 {
     public class JoinGameViewModel : ViewModelBase
     {
-        private readonly INavigationService navigationService;
         public int MenuSize { get{ return ShowMenu ? 200 : 0; }}
         public bool ShowMenu { get; set; }
-        private string gameId="120";
+        private string gameId="8";
         public string GameId { get { return gameId; }
             set {
                 ulong result;
@@ -22,17 +23,37 @@ namespace Privacy.ViewModel
                 else
                     RaisePropertyChanged(nameof(GameId));                }
         }
-        public JoinGameViewModel(INavigationService navigationService)
+        private readonly INavigationService navigationService;
+        private readonly IDataService dataService;
+        private readonly MainViewModel mvm;
+        public ulong SystemGameID = 0;
+        public Profile UserProfile { get { return dataService.GetUserprofile(mvm.SystemUserId); } }
+        public JoinGameViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm)
         {
             this.navigationService = navigationService;
+            this.dataService = dataService;
+            this.mvm = mvm;
+        }
+        public void NavigateToSettings()
+        {
+            navigationService.NavigateTo(Common.Navigation.Settings);
         }
         public void HambugerInteraction()
         {
             ShowMenu = !ShowMenu;
         }
-        public void NavigateToQuestionView()
+        public void NavigateToLobbyView()
         {
-            navigationService.NavigateTo(Common.Navigation.Question,Common.Mode.IsClient);
+            if (ulong.TryParse(GameId, out SystemGameID))
+            {
+
+                if (dataService.JoinGame(mvm.SystemUserId, SystemGameID) == SystemGameID)
+                    navigationService.NavigateTo(Common.Navigation.Lobby, Common.Mode.IsClient);
+            }
+        }
+        public void GoBackRequest()
+        {
+            navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
     }
 }

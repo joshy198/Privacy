@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,5 +30,24 @@ namespace Privacy.View
             this.InitializeComponent();
         }
         private CategoryViewModel VM => DataContext as CategoryViewModel;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ((App)Application.Current).OnBackRequested += OnOnBackRequested;
+            base.OnNavigatedTo(e);
+            if (VM.MenuSize != 0)
+                VM.HambugerInteraction();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            ((App)Application.Current).OnBackRequested -= OnOnBackRequested;
+
+            base.OnNavigatingFrom(e);
+        }
+        private void OnOnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+                VM.GoBackRequest();
+        }
     }
 }

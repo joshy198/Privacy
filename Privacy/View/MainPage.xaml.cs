@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,6 +27,23 @@ namespace Privacy
         public MainPage()
         {
             this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ((App)Application.Current).OnBackRequested += OnOnBackRequested;
+            base.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            ((App)Application.Current).OnBackRequested -= OnOnBackRequested;
+
+            base.OnNavigatingFrom(e);
+        }
+        private void OnOnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+            VM.GoBackRequest();
         }
         private MainViewModel VM => DataContext as MainViewModel;
     }

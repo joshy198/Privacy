@@ -9,5 +9,9 @@ namespace Privacy.Model
     public class ID
     {
         public UInt64 id { get; set; }
+        public override string ToString()
+        {
+            return id.ToString();
+        }
     }
 }

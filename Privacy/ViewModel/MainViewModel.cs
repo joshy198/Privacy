@@ -13,23 +13,35 @@ namespace Privacy.ViewModel
     public class MainViewModel:ViewModelBase
     {
         public List<Language> Languages { get; set; }
-        public String SelectedLanguage { set; get; }
+        public int SelectedLanguage { set; get; }
+        public ulong SystemUserId;
 
         public string UserName { get; set; }
         private readonly INavigationService navigationService;
         private readonly IDataService dataService;
-        private readonly CentralMenuViewModel centralViewModel;
-        public MainViewModel(INavigationService navigationService, IDataService dataService, CentralMenuViewModel centralViewModel)
+        public MainViewModel(INavigationService navigationService, IDataService dataService)
         {
             this.navigationService = navigationService;
             this.dataService = dataService;
-            this.centralViewModel = centralViewModel;
-            Languages = new List<Language>{ new Language { id = 1, title = "English" }, new Language { id = 2, title = "Deutsch" } };
+            Languages = dataService.GetLanguages().ToList();
+            if (SystemUserId > 0)
+                navigationService.NavigateTo(Common.Navigation.CentralMenu);
+
         }
         public void FinishSetup()
         {
-            //if(SelectedLanguage!=String.Empty&&UserName!=String.Empty)
+            if (UserName == String.Empty || UserName == null)
+                UserName = "Windows Phone User";
+            if (UserName.Length > 24)
+                UserName=UserName.Replace(System.Environment.NewLine, " ").Remove(20);
+
+            else
+                SystemUserId = dataService.CreateUser(Languages.ElementAt(SelectedLanguage).id, UserName);
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
+        }
+        public void GoBackRequest()
+        {
+            App.Current.Exit();
         }
 
     }

@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
+using Privacy.Model;
+using Privacy.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,17 @@ namespace Privacy.ViewModel
 {
     public class CentralMenuViewModel : ViewModelBase
     {
-        private readonly INavigationService navigationService;
         public bool ShowMenu { get; set;}
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
-        public CentralMenuViewModel(INavigationService navigationService)
+        private readonly INavigationService navigationService;
+        private readonly IDataService dataService;
+        private readonly MainViewModel mvm;
+        public Profile UserProfile{get{ return dataService.GetUserprofile(mvm.SystemUserId); }}
+        public CentralMenuViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm)
         {
             this.navigationService = navigationService;
+            this.dataService = dataService;
+            this.mvm = mvm;
         }
         public void HambugerInteraction()
         {
@@ -28,6 +35,14 @@ namespace Privacy.ViewModel
         public void NavigateToCategoryView()
         {
             navigationService.NavigateTo(Common.Navigation.Category);
+        }
+        public void NavigateToSettings()
+        {
+            navigationService.NavigateTo(Common.Navigation.Settings);
+        }
+        public void GoBackRequest()
+        {
+            App.Current.Exit();
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,7 +31,32 @@ namespace Privacy.View
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            ((App)Application.Current).OnBackRequested += OnOnBackRequested;
+            base.OnNavigatedTo(e);
             VM.Mode = e.Parameter as string;
+            VM.ReloadPlayers();
+            if (VM.MenuSize != 0)
+                VM.HambugerInteraction();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            ((App)Application.Current).OnBackRequested -= OnOnBackRequested;
+            base.OnNavigatingFrom(e);
+            VM.Mode = e.Parameter as string;
+        }
+        private async void OnOnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+            var dialog = new MessageDialog("Do you want to exit the current game?");
+            dialog.Title = "Confirmation";
+            dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
+            dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
+            var res = await dialog.ShowAsync();
+            if ((int)res.Id == 0)
+            {
+                VM.GoBackRequest();
+            }
         }
         private LobbyViewModel VM => DataContext as LobbyViewModel;
     }

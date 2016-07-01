@@ -20,7 +20,6 @@ namespace Privacy.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<CategoryViewModel>();
             SimpleIoc.Default.Register<CentralMenuViewModel>();
-            SimpleIoc.Default.Register<ContinueViewModel>();
             SimpleIoc.Default.Register<GuessViewModel>();
             SimpleIoc.Default.Register<QuestionViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
@@ -33,7 +32,6 @@ namespace Privacy.ViewModel
         }
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();
         public CategoryViewModel CategoryViewModel => ServiceLocator.Current.GetInstance<CategoryViewModel>();
-        public ContinueViewModel ContinueViewModel => ServiceLocator.Current.GetInstance<ContinueViewModel>();
         public GuessViewModel GuessViewModel => ServiceLocator.Current.GetInstance<GuessViewModel>();
         public QuestionViewModel QuestionViewModel => ServiceLocator.Current.GetInstance<QuestionViewModel>();
         public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
@@ -44,7 +42,6 @@ namespace Privacy.ViewModel
         {
             var service = new NavigationService();
             service.Configure(Navigation.Category, typeof(CategoryView));
-            service.Configure(Navigation.Continue, typeof(ContinueView));
             service.Configure(Navigation.Guess, typeof(GuessView));
             service.Configure(Navigation.Main, typeof(MainPage));
             service.Configure(Navigation.Question, typeof(QuestionView));

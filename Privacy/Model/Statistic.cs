@@ -8,6 +8,7 @@ namespace Privacy.Model
 {
     public class Statistic
     {
+        public ulong id { get; set; }
         public string name { get; set; }
         public int points { get; set; }
         public int guessed { get; set; }

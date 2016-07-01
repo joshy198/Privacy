@@ -106,6 +106,7 @@
     <Compile Include="Model\Language.cs" />
     <Compile Include="Common\Mode.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Profile.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\Statistic.cs" />
     <Compile Include="Services\ConcreteDataService.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="Services\LocalStorageService.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\CentralMenuViewModel.cs" />
-    <Compile Include="ViewModel\ContinueViewModel.cs" />
     <Compile Include="ViewModel\GuessViewModel.cs" />
     <Compile Include="ViewModel\JoinGameViewModel.cs" />
     <Compile Include="ViewModel\LobbyViewModel.cs" />
@@ -127,9 +127,6 @@
     </Compile>
     <Compile Include="View\CentralMenuView.xaml.cs">
       <DependentUpon>CentralMenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ContinueView.xaml.cs">
-      <DependentUpon>ContinueView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GuessView.xaml.cs">
       <DependentUpon>GuessView.xaml</DependentUpon>
@@ -178,10 +175,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CentralMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ContinueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

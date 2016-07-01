@@ -10,5 +10,9 @@ namespace Privacy.Model
     {
         public UInt64 id { get; set; }
         public string title { get; set; }
+        public override string ToString()
+        {
+            return title;
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace Privacy.Model
 {
     public class Player
     {
+        public ulong id { get; set; }
         public bool  show_stat { get; set; }
         public string title { get; set; }
     }

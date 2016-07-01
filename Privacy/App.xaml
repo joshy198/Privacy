@@ -15,6 +15,7 @@
         <SolidColorBrush x:Key="PrivacyTransparencyBrush" Opacity="1"/>
         <SolidColorBrush x:Key="PrivacyFontColorBrush" Color="#2e2c29"/>
         <SolidColorBrush x:Key="PrivacySystemColorBrush" Color="#451818"/>
+        <SolidColorBrush x:Key="PrivacyBurgerTextBrush" Color="#d9d4d2"/>
         <ControlTemplate x:Key="PrivacyButtonBorderThickness">
             <Border BorderThickness="10,0,0,0"/>
         </ControlTemplate>
@@ -119,6 +120,33 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="HamburgerContentButtonStyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="BorderThickness" Value="0,0,0,0" />
+            <Setter Property="Foreground" Value="{StaticResource PrivacyBurgerTextBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="UseSystemFocusVisuals" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="ContentPresenter"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          Content="{TemplateBinding Content}"
+                          ContentTransitions="{TemplateBinding ContentTransitions}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Padding="{TemplateBinding Padding}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                          AutomationProperties.AccessibilityView="Raw"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="BurgerBackgroundButton" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="BorderThickness" Value="0,0,0,0" />
@@ -175,6 +203,9 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Padding" Value="0,0,15,0"/>
+        </Style>
+        <Style x:Key="BurgerContent" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PrivacyBurgerTextBrush}"/>
         </Style>
     </Application.Resources>
 

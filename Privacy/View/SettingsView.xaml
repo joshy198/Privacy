@@ -25,13 +25,37 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Settings" Style="{StaticResource TextBlockHeaderStyle}"/>
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Language" Style="{StaticResource TextBlockStyle}"/>
-            <ComboBox Grid.Row="2" Grid.ColumnSpan="2" x:Name="comboBox" Style="{StaticResource ComboBoxStyle}"/>
-            <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="Name" Style="{StaticResource TextBlockStyle}"/>
-            <TextBox Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource TextBoxStyle}"/>
-            <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource ButtonStyle}" HorizontalContentAlignment="Left" VerticalAlignment="Bottom" Content="Apply"/>
-            <Button Grid.Row="7" Grid.Column="0" Style="{StaticResource ButtonStyle}" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Cancel"/>
+            <TextBlock Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Text="#Settings"
+                       Style="{StaticResource TextBlockHeaderStyle}"/>
+            <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="Language"
+                       Style="{StaticResource TextBlockStyle}"/>
+            <ComboBox Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      x:Name="comboBox"
+                      Style="{StaticResource ComboBoxStyle}"/>
+            <TextBlock Grid.Row="3"
+                       Grid.ColumnSpan="2" 
+                       Text="Name"
+                       Style="{StaticResource TextBlockStyle}"/>
+            <TextBox Grid.Row="4"
+                     Grid.ColumnSpan="2" 
+                     Style="{StaticResource TextBoxStyle}"/>
+            <Button Grid.Row="5"
+                    Grid.Column="1"
+                    Style="{StaticResource ButtonStyle}"
+                    HorizontalContentAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Content="Apply"/>
+            <Button Grid.Row="7"
+                    Grid.Column="0"
+                    Style="{StaticResource ButtonStyle}"
+                    HorizontalContentAlignment="Right"
+                    VerticalAlignment="Top"
+                    Content="Cancel"/>
         </Grid>
     </Grid>
 </Page>

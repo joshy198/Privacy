@@ -55,12 +55,55 @@
                     Background="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerBackground}}"
                     Foreground="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerForeground}}"
                     Click="{x:Bind VM.HambugerInteraction}"/>
-            <ListView Grid.Row="1"
-                      Width="{x:Bind VM.MenuSize, Mode=OneWay}"
-                      HorizontalAlignment="Left" 
-                      HorizontalContentAlignment="Left"
-                      Background="{StaticResource PrivacySystemColorBrush}">
-            </ListView>
+            <Grid Grid.Row="1"
+                  Width="{x:Bind VM.MenuSize, Mode=OneWay}"
+                  HorizontalAlignment="Left"
+                  Background="{StaticResource PrivacySystemColorBrush}"
+                  Padding="10,0,0,60">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="160"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Profile" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,0,0"/>
+                <Grid Grid.Row="1" Height="160">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Name" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.name}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="2" Text="Points" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.points}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="4" Text="Language" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.lang.title}" Style="{StaticResource BurgerContent}"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource BurgerContent}"
+                               Text="&#xE713;"
+                               VerticalAlignment="Center"
+                               TextAlignment="Right"
+                               FontFamily="Segoe MDL2 Assets"/>
+                    <Button Grid.Row="1"
+                            Grid.Column="1"
+                        Style="{StaticResource HamburgerContentButtonStyle}"
+                        Content="Settings"
+                            Click="{x:Bind VM.NavigateToSettings}"/>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

@@ -19,13 +19,15 @@ namespace Privacy.Services
         bool ForceNextQuestion(UInt64 UserId, UInt64 GameId);
         IEnumerable<Player> GetAnsweredUsers(UInt64 GameId);
         IEnumerable<Language> GetLanguages();
-        IEnumerable<Player> GetPlayersInGame();
+        IEnumerable<Player> GetPlayersInGame(ulong GameId);
         Question GetQuestionByUserAndGameId(UInt64 UserId, UInt64 GameId);
         IEnumerable<Group> GetQuestionGroupsByUserId(UInt64 UserId);
         IEnumerable<ID> GetQuestionIdsByGroupId(UInt64 GroupId);
         IEnumerable<Statistic> GetStatisticByGameId(UInt64 GameId);
+        Profile GetUserprofile(ulong UserId);
         bool IsContinueAllowed(UInt64 GameId);
         UInt64 JoinGame(UInt64 UserId, UInt64 GameId);
         UInt64 NewGame(UInt64 UserId, UInt64 QuestionId);
+        bool IsUserExisting(ulong UserId);
     }
 }

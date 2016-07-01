@@ -53,11 +53,11 @@ namespace Privacy.Services
         {
             return new List<Player>
             {
-                new Player { title = "Player 1", show_stat=true },
-                new Player { title = "Player 2", show_stat=true },
-                new Player { title = "Player 3", show_stat=true },
-                new Player { title = "Player 4", show_stat=true },
-                new Player { title = "Player 5", show_stat=true }
+                new Player {id=20, title = "Player 1", show_stat=true },
+                new Player {id=90, title = "Player 2", show_stat=true },
+                new Player {id=110, title = "Player 3", show_stat=true },
+                new Player {id=123, title = "Player 4", show_stat=true },
+                new Player {id=190, title = "Player 5", show_stat=true }
             };
         }
 
@@ -69,15 +69,15 @@ namespace Privacy.Services
             };
         }
 
-        public IEnumerable<Player> GetPlayersInGame()
+        public IEnumerable<Player> GetPlayersInGame( ulong GameId)
         {
             return new List<Player>
             {
-                new Player { title = "Player 1", show_stat=true },
-                new Player { title = "Player 2", show_stat=true },
-                new Player { title = "Player 3", show_stat=true },
-                new Player { title = "Player 4", show_stat=true },
-                new Player { title = "Player 5", show_stat=true }
+                new Player {id=20, title = "Player 1", show_stat=true },
+                new Player {id=90, title = "Player 2", show_stat=true },
+                new Player {id=110, title = "Player 3", show_stat=true },
+                new Player {id=123, title = "Player 4", show_stat=true },
+                new Player {id=190, title = "Player 5", show_stat=true }
             };
         }
 
@@ -112,15 +112,25 @@ namespace Privacy.Services
         {
             return new List<Statistic>
             {
-                new Statistic { guessed=3, name="Player 1", points=10210, yeses=3 },
-                new Statistic { guessed=2, name="Player 2", points=40, yeses=3 },
-                new Statistic { guessed=5, name="Player 3", points=27, yeses=3 },
-                new Statistic { guessed=1, name="Player 4", points=19, yeses=3 },
-                new Statistic { guessed=2, name="Player 5", points=58, yeses=3 },
+                new Statistic {id=20, guessed=3, name="Player 1", points=10210, yeses=3 },
+                new Statistic {id=90, guessed=2, name="Player 2", points=40, yeses=3 },
+                new Statistic {id=110, guessed=5, name="Player 3", points=27, yeses=3 },
+                new Statistic {id=123, guessed=1, name="Player 4", points=19, yeses=3 },
+                new Statistic {id=190, guessed=2, name="Player 5", points=58, yeses=3 },
             };
         }
 
+        public Profile GetUserprofile(ulong UserId)
+        {
+            return new Profile() { id = CreateUser(1, "Blabla"), lang = GetLanguages().FirstOrDefault(), name = "Testprofilename 12345", points = 200293 };
+        }
+
         public bool IsContinueAllowed(ulong GameId)
+        {
+            return true;
+        }
+
+        public bool IsUserExisting(ulong UserId)
         {
             return true;
         }

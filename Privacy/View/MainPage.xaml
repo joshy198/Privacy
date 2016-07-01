@@ -40,7 +40,7 @@
                           x:Name="comboBox" 
                           Style="{StaticResource ComboBoxStyle}"
                           ItemsSource="{x:Bind VM.Languages, Mode=OneWay}"
-                          SelectedItem="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"/>
+                          SelectedIndex="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"/>
                 <TextBlock Grid.Row="4"
                            Grid.ColumnSpan="2"
                            Text="Name"
