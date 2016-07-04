@@ -9,25 +9,26 @@ namespace Privacy.Services
 {
     public interface IDataService
     {
-        bool AllowCounting(UInt64 UserId,UInt64 GameId);
-        bool AllowStatistics(UInt64 UserId, UInt64 GameId);
-        bool AnswerQuestion(UInt64 UserId, UInt64 GameId, UInt64 QuestionId, bool YNAnswer, int cnt_answer);
-        bool ChangeLanguage(UInt64 UserId, UInt64 LanguageId);
-        bool ChangeUserName(UInt64 UserId, string Name);
-        int CountPlayersByGameId(UInt64 GameId);
-        UInt64 CreateUser(UInt64 LanguageId, string Name);
-        bool ForceNextQuestion(UInt64 UserId, UInt64 GameId);
-        IEnumerable<Player> GetAnsweredUsers(UInt64 GameId);
-        IEnumerable<Language> GetLanguages();
-        IEnumerable<Player> GetPlayersInGame(ulong GameId);
-        Question GetQuestionByUserAndGameId(UInt64 UserId, UInt64 GameId);
-        IEnumerable<Group> GetQuestionGroupsByUserId(UInt64 UserId);
-        IEnumerable<ID> GetQuestionIdsByGroupId(UInt64 GroupId);
-        IEnumerable<Statistic> GetStatisticByGameId(UInt64 GameId);
-        Profile GetUserprofile(ulong UserId);
-        bool IsContinueAllowed(UInt64 GameId);
-        UInt64 JoinGame(UInt64 UserId, UInt64 GameId);
-        UInt64 NewGame(UInt64 UserId, UInt64 QuestionId);
-        bool IsUserExisting(ulong UserId);
+        Task<bool> AllowCounting(UInt64 UserId,UInt64 GameId);
+        Task<bool> AllowStatistics(UInt64 UserId, UInt64 GameId);
+        Task<bool> AnswerQuestion(UInt64 UserId, UInt64 GameId, UInt64 QuestionId, bool YNAnswer, int? cnt_answer);
+        Task<bool> ChangeLanguage(UInt64 UserId, UInt64 LanguageId);
+        Task<bool> ChangeUserName(UInt64 UserId, string Name);
+        Task<int> CountPlayersByGameId(UInt64 GameId);
+        Task<ID> CreateUser(UInt64 LanguageId, string Name);
+        Task<bool> ForceNextQuestion(UInt64 UserId, UInt64 GameId, ulong QuestionId);
+        Task<IEnumerable<Player>> GetAnsweredUsers(UInt64 GameId);
+        Task<IEnumerable<Language>> GetLanguages();
+        Task<IEnumerable<Player>> GetPlayersInGame(ulong GameId);
+        Task<Question> GetQuestionByUserAndGameId(UInt64 UserId, UInt64 GameId);
+        Task<IEnumerable<Group>> GetQuestionGroupsByUserId(UInt64 UserId);
+        Task<IEnumerable<ID>> GetQuestionIdsByGroupId(UInt64 GroupId);
+        Task<IEnumerable<Statistic>> GetStatisticByGameId(UInt64 GameId);
+        Task<Profile> GetUserprofile(ulong UserId);
+        Task<bool> IsContinueAllowed(UInt64 GameId);
+        Task<ID> JoinGame(UInt64 UserId, UInt64 GameId);
+        Task<ID> NewGame(UInt64 UserId, UInt64 QuestionId);
+        Task<bool> IsUserExisting(ulong UserId);
+        Task<bool> IsGameExisting(ulong UserId);
     }
 }

@@ -34,8 +34,7 @@ namespace Privacy.View
         {
             ((App)Application.Current).OnBackRequested += OnOnBackRequested;
             base.OnNavigatedTo(e);
-            if (VM.MenuSize != 0)
-                VM.HambugerInteraction();
+            VM.LoadData();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

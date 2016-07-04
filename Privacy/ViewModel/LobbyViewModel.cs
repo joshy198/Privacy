@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 
 namespace Privacy.ViewModel
 {
@@ -14,26 +15,60 @@ namespace Privacy.ViewModel
     {
         public bool ShowMenu { get; set; }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
-        public string Mode { get; set; }
+        public string Mode { get;
+            set; }
+        public bool NextAvailable { get; set; }
+        public bool AdminAvailable { get {
+                if (NextAvailable || Common.Mode.IsClient == Mode || Common.Mode.ClientStatistic == Mode || Common.Mode.ClientWait == Mode)
+                    return false;
+                return true;
+            } }
         public string PlayersList { get; set; }
         public string DisplayGameID { get { return Mode == Common.Mode.IsClient ? "#" + jvm.SystemGameID : "#" + cvm.SystemGameID; } }
         public string ButtonText { get {
                 if (Common.Mode.HostStart == Mode)
+                {
+                    NextAvailable = true;
                     return "Start Game";
+                }
                 else if (Common.Mode.ClientStatistic == Mode)
                     return "Continue";
                 else if (Common.Mode.HostStatistic == Mode)
+                {
+                    //NextAvailable = true;
                     return "Continue";
+                }
                 else if (Common.Mode.HostWait == Mode)
+                {
+                    //NextAvailable = true;
                     return "Ok";
+                }
                 else if (Common.Mode.ClientWait == Mode)
                     return "Continue";
                 else if (Common.Mode.IsClient == Mode)
-                    return "Continue";
-                    return "ERR";
+                {
+                    NextAvailable = true;
+                    return "Start";
+                }
+                return "ERR";
             } }
+        public string AdminText
+        {
+            get
+            {
+                if (Common.Mode.HostStatistic == Mode)
+                {
+                    return "Allow Statistic";
+                }
+                else if (Common.Mode.HostWait == Mode)
+                {
+                    return "Allow Guessing";
+                }
+                return "ERR";
+            }
+        }
         public string PlayersListHeader { get; set; }
-        public Profile UserProfile { get { return dataService.GetUserprofile(mvm.SystemUserId); } }
+        public Profile UserProfile { get; set; }
         private readonly INavigationService navigationService;
         private readonly IDataService dataService;
         private readonly JoinGameViewModel jvm;
@@ -47,6 +82,25 @@ namespace Privacy.ViewModel
             this.cvm = cvm;
             this.mvm = mvm;
         }
+        public async void LoadData()
+        {
+            ShowMenu = false;
+            NextAvailable = false;
+            UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
+            ReloadPlayers();
+        }
+        public async void EnableNext()
+        {
+            if (await dataService.IsGameExisting(cvm.SystemGameID))
+            {
+                if (Common.Mode.HostWait == Mode)
+                    NextAvailable = await dataService.AllowCounting(mvm.SystemUserId.Id, cvm.SystemGameID);
+                else if (Common.Mode.HostStatistic == Mode)
+                    NextAvailable = await dataService.AllowStatistics(mvm.SystemUserId.Id, cvm.SystemGameID);
+            }
+            else
+            NavigateToCentralMenu();
+        }
         
         public void HambugerInteraction()
         {
@@ -59,49 +113,99 @@ namespace Privacy.ViewModel
             else
                 navigationService.NavigateTo(Common.Navigation.Join);
         }
-        public void ReloadPlayers()
+        public async void ReloadPlayers()
         {
             PlayersList = string.Empty;
             if (Common.Mode.HostStart == Mode)
             {
-                PlayersListHeader = "Player\t @Game "+cvm.SystemGameID;
-                foreach (var v in dataService.GetPlayersInGame(cvm.SystemGameID))
+                if (await dataService.IsGameExisting(cvm.SystemGameID))
                 {
-                    PlayersList += v.title + "\n";
+                    PlayersListHeader = "Game ID " + cvm.SystemGameID;
+                    foreach (var v in await dataService.GetPlayersInGame(cvm.SystemGameID))
+                    {
+                        PlayersList += v.Title + "\n";
+                    }
                 }
+                else
+                    NavigateToCentralMenu();
+            }
+            else if (Common.Mode.IsClient == Mode)
+            {
+                if (await dataService.IsGameExisting(jvm.SystemGameID))
+                {
+                    PlayersListHeader = "Players";
+                    foreach (var v in await dataService.GetPlayersInGame(jvm.SystemGameID))
+                    {
+                        PlayersList += v.Title + "\n";
+                    }
+                }
+                else
+                    NavigateToCentralMenu();
             }
             else if (Common.Mode.ClientWait == Mode)
             {
-                PlayersListHeader = "Player";
-                foreach (var v in dataService.GetAnsweredUsers(jvm.SystemGameID))
+                if (await dataService.IsGameExisting(jvm.SystemGameID))
                 {
-                    PlayersList += v.title + "\n";
+                    NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
+                    PlayersListHeader = "Answered Players";
+                    foreach (var v in await dataService.GetAnsweredUsers(jvm.SystemGameID))
+                    {
+                        PlayersList += v.Title + "\n";
+                    }
                 }
+                else
+                    NavigateToCentralMenu();
             }
             else if (Common.Mode.HostWait == Mode)
             {
-                PlayersListHeader = "Player";
-                foreach (var v in dataService.GetAnsweredUsers(cvm.SystemGameID))
+                if (await dataService.IsGameExisting(cvm.SystemGameID))
                 {
-                    PlayersList += v.title + "\n";
+                    PlayersListHeader = "Answered Players";
+                    foreach (var v in await dataService.GetAnsweredUsers(cvm.SystemGameID))
+                    {
+                        PlayersList += v.Title + "\n";
+                    }
                 }
+                else
+                    NavigateToCentralMenu();
             }
             else if (Common.Mode.ClientStatistic == Mode)
             {
-                PlayersListHeader = "Player\t\tDifference\tTotal";
-                foreach (var v in dataService.GetStatisticByGameId(cvm.SystemGameID).OrderByDescending(x => x.points))
+                if (await dataService.IsGameExisting(jvm.SystemGameID))
                 {
-                    PlayersList += String.Format("{0}\t\t{1,7}\t\t{2}\n", v.name, Math.Abs(v.guessed-v.yeses), v.points);
-                    //PlayersList += ""+v.name + "\n\n";
+                    PlayersListHeader = "Player\t\tDifference\tTotal";
+                    foreach (var v in (await dataService.GetStatisticByGameId(jvm.SystemGameID)).OrderByDescending(x => x.Points))
+                    {
+                        if (v.Name.Length > 15)
+                            v.Name = v.Name.Remove(15);
+                        PlayersList += v.Name.PadRight(15, ' ');
+                        if (v.Name.Length < 10)
+                            PlayersList += "\t";
+                        PlayersList += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
+                        //PlayersList += ""+v.name + "\n\n";
+                    }
                 }
+                else
+                    NavigateToCentralMenu();
             }
             else if (Common.Mode.HostStatistic == Mode)
             {
-                foreach (var v in dataService.GetStatisticByGameId(cvm.SystemGameID).OrderByDescending(x => x.points))
+                if (await dataService.IsGameExisting(cvm.SystemGameID))
                 {
-                    PlayersList += String.Format("{0}\t\t{1,7}\t\t{2}\n", v.name, Math.Abs(v.guessed - v.yeses), v.points);
-                    //PlayersList += ""+v.name + "\n\n";
+                    PlayersListHeader = "Player\t\tDifference\tTotal";
+                    foreach (var v in (await dataService.GetStatisticByGameId(cvm.SystemGameID)).OrderByDescending(x => x.Points))
+                    {
+                        if (v.Name.Length > 15)
+                            v.Name = v.Name.Remove(15);
+                        PlayersList += v.Name.PadRight(15, ' ');
+                        if (v.Name.Length < 10)
+                            PlayersList += "\t";
+                        PlayersList += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
+                        //PlayersList += ""+v.name + "\n\n";
+                    }
                 }
+                else
+                    NavigateToCentralMenu();
             }
         }
 
@@ -113,18 +217,45 @@ namespace Privacy.ViewModel
         {
             navigationService.NavigateTo(Common.Navigation.Settings);
         }
-        public void NavigateToQuestionView()
+        public async void NavigateToQuestionView()
         {
-            if (Common.Mode.HostStart == Mode || Common.Mode.HostStatistic == Mode)
+            if (Common.Mode.HostStart == Mode)
+            {
                 navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsHost);
+            }
+            else if (Common.Mode.HostStatistic == Mode)
+            {
+                if (await cvm.GoToNextQuestion())
+                    navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsHost);
+                else
+                {
+                    var dialog = new MessageDialog("You've played through all the questions");
+                    dialog.Title = "Congratulations";
+                    dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+                    var res = await dialog.ShowAsync();
+                    if ((int)res.Id == 0)
+                    {
+                        GoBackRequest();
+                    }
+                }
+
+            }
             else if (Common.Mode.ClientStatistic == Mode)
+            {
                 navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsClient);
+            }
             else if (Common.Mode.HostWait == Mode)
+            {
                 navigationService.NavigateTo(Common.Navigation.Guess, Common.Mode.IsHost);
+            }
             else if (Common.Mode.ClientWait == Mode)
+            {
                 navigationService.NavigateTo(Common.Navigation.Guess, Common.Mode.IsClient);
+            }
             else if (Common.Mode.IsClient == Mode)
+            {
                 navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsClient);
+            }
         }
     }
 }

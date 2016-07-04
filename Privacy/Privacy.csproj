@@ -101,6 +101,11 @@
     <Compile Include="Converters\BurgerMenuSizeConverter.cs" />
     <Compile Include="Converters\ButtonVisibilityConverter.cs" />
     <Compile Include="Converters\LanguageToObjectConverter.cs" />
+    <Compile Include="JsonObj\JsonGroup.cs" />
+    <Compile Include="JsonObj\JsonIDs.cs" />
+    <Compile Include="JsonObj\JsonLang.cs" />
+    <Compile Include="JsonObj\JsonPlayers.cs" />
+    <Compile Include="JsonObj\JsonStat.cs" />
     <Compile Include="Model\Group.cs" />
     <Compile Include="Model\ID.cs" />
     <Compile Include="Model\Language.cs" />
@@ -155,6 +160,8 @@
     <None Include="Privacy_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\anm.gif" />
+    <Content Include="Assets\start.png" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />

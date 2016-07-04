@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,11 @@ namespace Privacy.Model
 {
     public class Player
     {
-        public ulong id { get; set; }
-        public bool  show_stat { get; set; }
-        public string title { get; set; }
+        [JsonProperty("id")]
+        public ulong ID { get; set; }
+        [JsonProperty("show_stat")]
+        public bool  ShowStatistic { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
     }
 }

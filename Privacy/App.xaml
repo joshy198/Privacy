@@ -101,6 +101,8 @@
             <Setter Property="FontWeight" Value="Normal" />
             <Setter Property="FontSize" Value="25" />
             <Setter Property="UseSystemFocusVisuals" Value="False" />
+            <Setter Property="Foreground" Value="{StaticResource PrivacyBurgerTextBrush}"/>
+            <Setter Property="Background" Value="{StaticResource PrivacySystemColorBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -197,12 +199,11 @@
             <Setter Property="Margin" Value="15,0,15,0"/>
         </Style>
         <Style x:Key="TextBlockHeaderStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource PrivacySystemColorBrush}"/>
-            <Setter Property="Opacity" Value="0.4"/>
-            <Setter Property="FontSize" Value="45"/>
+            <Setter Property="Foreground" Value="{StaticResource PrivacyBurgerTextBrush}"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="0,0,15,0"/>
+            <Setter Property="Padding" Value="0,0,55,0"/>
         </Style>
         <Style x:Key="BurgerContent" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource PrivacyBurgerTextBrush}"/>

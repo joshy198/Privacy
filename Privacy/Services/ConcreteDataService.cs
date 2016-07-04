@@ -4,145 +4,254 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Privacy.Model;
+using System.Net;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Privacy.JsonObj;
 
 namespace Privacy.Services
 {
     public class ConcreteDataService : IDataService
     {
-        public bool AllowCounting(ulong UserId, ulong GameId)
+        private static string url = $"http://privacygame.soft-tec.net/";
+        private readonly HttpClient client = new HttpClient();
+        public async Task<bool> AllowCounting(ulong UserId, ulong GameId)
         {
-            return true;
-        }
-
-        public bool AllowStatistics(ulong UserId, ulong GameId)
-        {
-            return true;
-        }
-
-        public bool AnswerQuestion(ulong UserId, ulong GameId, ulong QuestionId, bool YNAnswer, int cnt_answer)
-        {
-            return true;
-        }
-
-        public bool ChangeLanguage(ulong UserId, ulong LanguageId)
-        {
-            return true;
-        }
-
-        public bool ChangeUserName(ulong UserId, string Name)
-        {
-            return true;
-        }
-
-        public int CountPlayersByGameId(ulong GameId)
-        {
-            return 5;
-        }
-
-        public ulong CreateUser(ulong LanguageId, string Name)
-        {
-            return 10;
-        }
-
-        public bool ForceNextQuestion(ulong UserId, ulong GameId)
-        {
-            return true;
-        }
-
-        public IEnumerable<Player> GetAnsweredUsers(ulong GameId)
-        {
-            return new List<Player>
+            var formContent = new FormUrlEncodedContent(new[]
             {
-                new Player {id=20, title = "Player 1", show_stat=true },
-                new Player {id=90, title = "Player 2", show_stat=true },
-                new Player {id=110, title = "Player 3", show_stat=true },
-                new Player {id=123, title = "Player 4", show_stat=true },
-                new Player {id=190, title = "Player 5", show_stat=true }
-            };
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("game_id", GameId.ToString())
+            });
+            
+            var response = await client.PostAsync(url + "allow_counting.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync()); ;
         }
 
-        public IEnumerable<Language> GetLanguages()
+        public async Task<bool> AllowStatistics(ulong UserId, ulong GameId)
         {
-            return new List<Language> {
-                new Language { id = 1, title = "English" },
-                new Language { id = 1, title = "German" }
-            };
-        }
-
-        public IEnumerable<Player> GetPlayersInGame( ulong GameId)
-        {
-            return new List<Player>
+            var formContent = new FormUrlEncodedContent(new[]
             {
-                new Player {id=20, title = "Player 1", show_stat=true },
-                new Player {id=90, title = "Player 2", show_stat=true },
-                new Player {id=110, title = "Player 3", show_stat=true },
-                new Player {id=123, title = "Player 4", show_stat=true },
-                new Player {id=190, title = "Player 5", show_stat=true }
-            };
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("game_id", GameId.ToString())
+            });
+            
+            var response = await client.PostAsync(url + "allow_statistics.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
         }
 
-        public Question GetQuestionByUserAndGameId(ulong UserId, ulong GameId)
+        public async Task<bool> AnswerQuestion(ulong UserId, ulong GameId, ulong QuestionId, bool YNAnswer, int? cnt_answer)
         {
-            return new Question { id = 1, title = "Hast du jemals eine Frage beantwortet?" };
-        }
-
-        public IEnumerable<Group> GetQuestionGroupsByUserId(ulong UserId)
-        {
-            return new List<Group>
+            var formContent = new FormUrlEncodedContent(new[]
             {
-                new Group { id = 1, title = "Category 1" },
-                new Group { id = 2, title = "Category 2" },
-                new Group { id = 3, title = "Category 3" }
-            };
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("game_id", GameId.ToString()),
+                new KeyValuePair<string, string>("question_id", QuestionId.ToString()),
+                new KeyValuePair<string, string>("yn_answer", YNAnswer.ToString()),
+                new KeyValuePair<string, string>("cnt_answer", cnt_answer.ToString())
+
+            });
+            
+            var response = await client.PostAsync(url + "answer_question.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
         }
 
-        public IEnumerable<ID> GetQuestionIdsByGroupId(ulong GroupId)
+        public async Task<bool> ChangeLanguage(ulong UserId, ulong LanguageId)
         {
-            return new List<ID> {
-                new ID { id = 1 },
-                new ID { id = 2 },
-                new ID { id = 3 },
-                new ID { id = 4 },
-                new ID { id = 5 },
-                new ID { id = 70 }
-            };
-        }
-
-        public IEnumerable<Statistic> GetStatisticByGameId(ulong GameId)
-        {
-            return new List<Statistic>
+            var formContent = new FormUrlEncodedContent(new[]
             {
-                new Statistic {id=20, guessed=3, name="Player 1", points=10210, yeses=3 },
-                new Statistic {id=90, guessed=2, name="Player 2", points=40, yeses=3 },
-                new Statistic {id=110, guessed=5, name="Player 3", points=27, yeses=3 },
-                new Statistic {id=123, guessed=1, name="Player 4", points=19, yeses=3 },
-                new Statistic {id=190, guessed=2, name="Player 5", points=58, yeses=3 },
-            };
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("lang_id", LanguageId.ToString())
+            });
+            
+            var response = await client.PostAsync(url + "change_language.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
         }
 
-        public Profile GetUserprofile(ulong UserId)
+        public async Task<bool> ChangeUserName(ulong UserId, string Name)
         {
-            return new Profile() { id = CreateUser(1, "Blabla"), lang = GetLanguages().FirstOrDefault(), name = "Testprofilename 12345", points = 200293 };
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("name", Name)
+            });
+            
+            var response = await client.PostAsync(url + "change_user_name.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
         }
 
-        public bool IsContinueAllowed(ulong GameId)
+        public async Task<int> CountPlayersByGameId(ulong GameId)
         {
-            return true;
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("game_id", GameId.ToString()),
+            });
+            
+            var response = await client.PostAsync(url + "count_players_by_game_id.php", formContent);
+            return JsonConvert.DeserializeObject<int>(await response.Content.ReadAsStringAsync());
         }
 
-        public bool IsUserExisting(ulong UserId)
+        public async Task<ID> CreateUser(ulong LanguageId, string Name)
         {
-            return true;
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("lang_id", LanguageId.ToString()),
+                new KeyValuePair<string, string>("name", Name)
+            });
+            var response = await client.PostAsync(url + "create_user.php", formContent);
+            return JsonConvert.DeserializeObject<ID>(await response.Content.ReadAsStringAsync());
         }
 
-        public ulong JoinGame(ulong UserId, ulong GameId)
+        public async Task<bool> ForceNextQuestion(ulong UserId, ulong GameId, ulong QuestionId)
         {
-            return 8;
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("game_id", GameId.ToString()),
+                new KeyValuePair<string, string>("question_id", QuestionId.ToString())
+            });
+            var response = await client.PostAsync(url + "force_next_question.php", formContent);
+            var data = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<bool>(data);
         }
 
-        public ulong NewGame(ulong UserId, ulong QuestionId)
+        public async Task<IEnumerable<Player>> GetAnsweredUsers(ulong GameId)
         {
-            return 4;
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("game_id", GameId.ToString())
+            });
+            
+            var response = await client.PostAsync(url + "get_answered_users.php", formContent);
+            return JsonConvert.DeserializeObject<JsonPlayers>(await response.Content.ReadAsStringAsync()).Players;
+        }
+
+        public async Task<IEnumerable<Language>> GetLanguages()
+        {
+            var answ = await client.GetStringAsync(url + "get_languages.php");
+            var lang = JsonConvert.DeserializeObject<JsonLang>(answ);
+            return lang.Langs;
+        }
+
+        public async Task<IEnumerable<Player>> GetPlayersInGame( ulong GameId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("game_id", GameId.ToString())
+            });
+            var response = await client.PostAsync(url + "get_players_in_game.php", formContent);
+            return JsonConvert.DeserializeObject<JsonPlayers>(await response.Content.ReadAsStringAsync()).Players;
+        }
+
+        public async Task<Question> GetQuestionByUserAndGameId(ulong UserId, ulong GameId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("game_id", GameId.ToString())
+            });
+            
+            var response = await client.PostAsync(url + "get_question_by_user_and_game_id.php", formContent);
+            return JsonConvert.DeserializeObject<Question>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<IEnumerable<Group>> GetQuestionGroupsByUserId(ulong UserId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+            });
+            
+            var response = await client.PostAsync(url + "get_question_groups_by_user_id.php", formContent);
+            return JsonConvert.DeserializeObject<JsonGroup>(await response.Content.ReadAsStringAsync()).QouestionGroups;
+        }
+
+        public async Task<IEnumerable<ID>> GetQuestionIdsByGroupId(ulong GroupId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("grp_id", GroupId.ToString()),
+            });
+            
+            var response = await client.PostAsync(url + "get_question_ids_by_grp_id.php", formContent);
+            return JsonConvert.DeserializeObject<JsonIDs>(await response.Content.ReadAsStringAsync()).QuestionIDs;
+
+        }
+
+        public async Task<IEnumerable<Statistic>> GetStatisticByGameId(ulong GameId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("game_id", GameId.ToString()),
+            });
+            
+            var response = await client.PostAsync(url + "get_statistic_by_game_id.php", formContent);
+            return JsonConvert.DeserializeObject<JsonStat>(await response.Content.ReadAsStringAsync()).Statistics;
+        }
+
+        public async Task<Profile> GetUserprofile(ulong UserId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+            });
+            
+            var response = await client.PostAsync(url + "get_user_profile.php", formContent);
+            return JsonConvert.DeserializeObject<Profile>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<bool> IsContinueAllowed(ulong GameId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("game_id", GameId.ToString()),
+            });
+            
+            var response = await client.PostAsync(url + "is_continue_allowed.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<bool> IsUserExisting(ulong UserId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+            });
+            var response = await client.PostAsync(url + "is_user_existing.php", formContent);
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<bool> IsGameExisting(ulong GameId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("game_id", GameId.ToString()),
+            });
+            var response = await client.PostAsync(url + "is_game_existing.php", formContent);
+            var data = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<bool>(data);
+        }
+
+        public async Task<ID> JoinGame(ulong UserId, ulong GameId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("game_id", GameId.ToString())
+            });
+            
+            var response = await client.PostAsync(url + "join_game.php", formContent);
+            return JsonConvert.DeserializeObject<ID>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<ID> NewGame(ulong UserId, ulong QuestionId)
+        {
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("user_id", UserId.ToString()),
+                new KeyValuePair<string, string>("question_id", QuestionId.ToString())
+            });
+            var response = await client.PostAsync(url + "new_game.php", formContent);
+            return JsonConvert.DeserializeObject<ID>(await response.Content.ReadAsStringAsync());
         }
     }
 }

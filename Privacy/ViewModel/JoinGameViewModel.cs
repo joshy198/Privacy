@@ -14,7 +14,7 @@ namespace Privacy.ViewModel
     {
         public int MenuSize { get{ return ShowMenu ? 200 : 0; }}
         public bool ShowMenu { get; set; }
-        private string gameId="8";
+        private string gameId="7";
         public string GameId { get { return gameId; }
             set {
                 ulong result;
@@ -26,8 +26,9 @@ namespace Privacy.ViewModel
         private readonly INavigationService navigationService;
         private readonly IDataService dataService;
         private readonly MainViewModel mvm;
+        public string NotificationContent { get; set; }
         public ulong SystemGameID = 0;
-        public Profile UserProfile { get { return dataService.GetUserprofile(mvm.SystemUserId); } }
+        public Profile UserProfile { get; set; }
         public JoinGameViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm)
         {
             this.navigationService = navigationService;
@@ -42,18 +43,27 @@ namespace Privacy.ViewModel
         {
             ShowMenu = !ShowMenu;
         }
-        public void NavigateToLobbyView()
+        public async void NavigateToLobbyView()
         {
             if (ulong.TryParse(GameId, out SystemGameID))
             {
+                NotificationContent = String.Empty;
 
-                if (dataService.JoinGame(mvm.SystemUserId, SystemGameID) == SystemGameID)
+                if ((await dataService.JoinGame(mvm.SystemUserId.Id, SystemGameID)).Id == SystemGameID)
                     navigationService.NavigateTo(Common.Navigation.Lobby, Common.Mode.IsClient);
+                else
+                    NotificationContent = "Wrong Game ID";
             }
         }
         public void GoBackRequest()
         {
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
+        }
+        public async void LoadData()
+        {
+            ShowMenu = false;
+            NotificationContent = String.Empty;
+            UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
         }
     }
 }

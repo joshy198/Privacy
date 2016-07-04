@@ -12,7 +12,7 @@
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="64"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -21,7 +21,12 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Lobby" Style="{StaticResource TextBlockHeaderStyle}"/>
+            <Grid Grid.Row="0"
+                  Grid.ColumnSpan="2"
+                  Background="{StaticResource PrivacySystemColorBrush}">
+                <TextBlock Text="Lobby"
+                       Style="{StaticResource TextBlockHeaderStyle}"/>
+            </Grid>
             <TextBlock Margin="20,0,0,0" Grid.Row="1" Grid.ColumnSpan="2" Text="{x:Bind VM.PlayersListHeader, Mode=OneWay}" FontWeight="Bold" FontSize="25"/>
             <ScrollViewer  Margin="20,0,0,0" Grid.Row="2"
                        Grid.ColumnSpan="2"
@@ -37,13 +42,23 @@
                      HorizontalContentAlignment="Left"
                      VerticalAlignment="Top"
                      Style="{StaticResource ButtonStyle}"
-                     Click="{x:Bind VM.NavigateToQuestionView}"/>
+                     Click="{x:Bind VM.NavigateToQuestionView}"
+                     Visibility="{x:Bind VM.NextAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
+            <Button  Grid.Row="3"
+                     Grid.Column="1" 
+                     Content="{x:Bind VM.AdminText, Mode=OneWay}"
+                     HorizontalContentAlignment="Left"
+                     VerticalAlignment="Top"
+                     Style="{StaticResource ButtonStyle}"
+                     Click="{x:Bind VM.EnableNext}"
+                     Visibility="{x:Bind VM.AdminAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
         </Grid>
         <Grid>
             <Button
                     Grid.Column="1"
                     Style="{StaticResource BurgerBackgroundButton}"
-                    Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
+                    Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"
+                Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -55,8 +70,6 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0"
                     Style="{StaticResource HamburgerButtonStyle}"
-                    Background="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerBackground}}"
-                    Foreground="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerForeground}}"
                     Click="{x:Bind VM.HambugerInteraction}"/>
             <Grid Grid.Row="1"
                   Width="{x:Bind VM.MenuSize, Mode=OneWay}"
@@ -70,7 +83,7 @@
                     <RowDefinition Height="160"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Bind VM.DisplayGameID}" TextAlignment="Right" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,25,0"/>
+                <TextBlock Grid.Row="0" Text="{x:Bind VM.DisplayGameID, Mode=OneWay}" TextAlignment="Right" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,25,0"/>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
@@ -114,11 +127,11 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Name" Style="{StaticResource BurgerContent}" FontSize="20"/>
-                    <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.name}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.Name, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                     <TextBlock Grid.Row="2" Text="Points" Style="{StaticResource BurgerContent}" FontSize="20"/>
-                    <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.points}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.Points, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                     <TextBlock Grid.Row="4" Text="Language" Style="{StaticResource BurgerContent}" FontSize="20"/>
-                    <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.lang.title}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.Lang.Title, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                 </Grid>
                 <Grid Grid.Row="4">
                     <Grid.RowDefinitions>

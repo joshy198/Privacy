@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,18 @@ namespace Privacy.Model
 {
     public class Profile
     {
-        public ulong id { get; set; }
-        public ulong points { get; set; }
-        public string name { get; set; }
-        public Language lang { get; set; }
+        [JsonProperty("id")]
+        public ulong ID { get; set; }
+        [JsonProperty("points")]
+        public ulong Points { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("lang")]
+        public Language Lang { get; set; }
 
         public override string ToString()
         {
-            return String.Format("Name: {0}\nPoints: {1}\nLanguage: {2}",name,points,lang.title);
+            return String.Format("Name: {0}\nPoints: {1}\nLanguage: {2}",Name,Points,Lang.Title);
         }
     }
 }

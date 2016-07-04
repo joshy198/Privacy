@@ -12,7 +12,8 @@
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="64"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
@@ -25,37 +26,46 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Text="#Settings"
+            <Grid Grid.Row="0"
+                  Grid.ColumnSpan="2"
+                  Background="{StaticResource PrivacySystemColorBrush}">
+                <TextBlock Text="Menu"
                        Style="{StaticResource TextBlockHeaderStyle}"/>
-            <TextBlock Grid.Row="1"
+            </Grid>
+            <TextBlock Grid.Row="2"
                        Grid.ColumnSpan="2"
                        Text="Language"
                        Style="{StaticResource TextBlockStyle}"/>
-            <ComboBox Grid.Row="2"
+            <ComboBox Grid.Row="3"
                       Grid.ColumnSpan="2"
-                      x:Name="comboBox"
-                      Style="{StaticResource ComboBoxStyle}"/>
-            <TextBlock Grid.Row="3"
+                      Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{x:Bind VM.Languages, Mode=OneWay}"
+                      SelectedIndex="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"
+                      IsEnabled="{x:Bind VM.UserControlsEnabled, Mode=OneWay}"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"/>
+            <TextBlock Grid.Row="4"
                        Grid.ColumnSpan="2" 
                        Text="Name"
                        Style="{StaticResource TextBlockStyle}"/>
-            <TextBox Grid.Row="4"
+            <TextBox Grid.Row="5"
                      Grid.ColumnSpan="2" 
-                     Style="{StaticResource TextBoxStyle}"/>
-            <Button Grid.Row="5"
+                     Style="{StaticResource TextBoxStyle}"
+                     Text="{x:Bind VM.Username, Mode=TwoWay}"/>
+            <Button Grid.Row="6"
                     Grid.Column="1"
                     Style="{StaticResource ButtonStyle}"
                     HorizontalContentAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Content="Apply"/>
-            <Button Grid.Row="7"
+                    Content="Save"
+                    Click="{x:Bind VM.SaveSettings}"/>
+            <Button Grid.Row="8"
                     Grid.Column="0"
                     Style="{StaticResource ButtonStyle}"
                     HorizontalContentAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="Cancel"/>
+                    Content="Cancel"
+                    Click="{x:Bind VM.GoBackRequest}"/>
         </Grid>
     </Grid>
 </Page>

@@ -12,7 +12,7 @@
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="64"/>
                 <RowDefinition/>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="10"/>
@@ -24,12 +24,17 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="#Category" Style="{StaticResource TextBlockHeaderStyle}"/>
+            <Grid Grid.Row="0"
+                  Grid.ColumnSpan="2"
+                  Background="{StaticResource PrivacySystemColorBrush}">
+                <TextBlock Text="Category"
+                       Style="{StaticResource TextBlockHeaderStyle}"/>
+            </Grid>
             <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Select a category" Style="{StaticResource TextBlockStyle}"/>
             <ComboBox Grid.Row="4"
                       Grid.ColumnSpan="2"
                       Style="{StaticResource ComboBoxStyle}"
-                      ItemsSource="{x:Bind VM.Groups}"
+                      ItemsSource="{x:Bind VM.Groups, Mode=OneWay}"
                       SelectedIndex="{x:Bind VM.SelectedGroup, Mode=TwoWay}"/>
             <Button  Grid.Row="5"
                      Grid.Column="1" 
@@ -54,8 +59,6 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0"
                     Style="{StaticResource HamburgerButtonStyle}"
-                    Background="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerBackground}}"
-                    Foreground="{x:Bind VM.ShowMenu, Mode=OneWay, Converter={StaticResource BurgerForeground}}"
                     Click="{x:Bind VM.HambugerInteraction}"/>
             <Grid Grid.Row="1"
                   Width="{x:Bind VM.MenuSize, Mode=OneWay}"
@@ -78,11 +81,11 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Name" Style="{StaticResource BurgerContent}" FontSize="20"/>
-                    <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.name}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.Name, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                     <TextBlock Grid.Row="2" Text="Points" Style="{StaticResource BurgerContent}" FontSize="20"/>
-                    <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.points}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.Points, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                     <TextBlock Grid.Row="4" Text="Language" Style="{StaticResource BurgerContent}" FontSize="20"/>
-                    <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.lang.title}" Style="{StaticResource BurgerContent}"/>
+                    <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.Lang.Title, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>

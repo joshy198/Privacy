@@ -34,9 +34,7 @@ namespace Privacy.View
             ((App)Application.Current).OnBackRequested += OnOnBackRequested;
             base.OnNavigatedTo(e);
             VM.Mode = e.Parameter as string;
-            VM.ReloadPlayers();
-            if (VM.MenuSize != 0)
-                VM.HambugerInteraction();
+            VM.LoadData();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

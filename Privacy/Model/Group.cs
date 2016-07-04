@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,13 @@ namespace Privacy.Model
 {
     public class Group
     {
-        public UInt64 id { get; set; }
-        public string title { get; set; }
+        [JsonProperty("id")]
+        public UInt64 ID { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
         public override string ToString()
         {
-            return title;
+            return Title;
         }
     }
 }

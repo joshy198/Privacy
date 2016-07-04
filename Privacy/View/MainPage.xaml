@@ -14,7 +14,7 @@
             <Image/>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="64"/>
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="64"/>
                     <RowDefinition Height="64"/>
@@ -27,36 +27,57 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0"
+                <Grid Grid.Row="0"
                            Grid.ColumnSpan="2"
-                           Text="#Setup"
+                      Background="{StaticResource PrivacySystemColorBrush}">
+                <TextBlock 
+                           Text="Setup"
                            Style="{StaticResource TextBlockHeaderStyle}"/>
+                </Grid>
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
                            Text="Language"
                            Style="{StaticResource TextBlockStyle}"/>
+                <TextBlock Grid.Row="3"
+                         Grid.ColumnSpan="2"
+                         Style="{StaticResource TextBlockStyle}"
+                         Text="Pick a Language"
+                         Visibility="{x:Bind VM.LangInfoAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
                 <ComboBox Grid.Row="3"
                           Grid.ColumnSpan="2"
                           x:Name="comboBox" 
                           Style="{StaticResource ComboBoxStyle}"
                           ItemsSource="{x:Bind VM.Languages, Mode=OneWay}"
-                          SelectedIndex="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"/>
+                          SelectedIndex="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"
+                          IsEnabled="{x:Bind VM.UserControlsEnabled, Mode=OneWay}"
+                          VerticalContentAlignment="Center"/>
                 <TextBlock Grid.Row="4"
                            Grid.ColumnSpan="2"
                            Text="Name"
                            Style="{StaticResource TextBlockStyle}"/>
+                <TextBlock Grid.Row="5"
+                         Grid.ColumnSpan="2"
+                         Style="{StaticResource TextBlockStyle}"
+                         Text="Enter your Name"
+                         Visibility="{x:Bind VM.NameInfoAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
                 <TextBox Grid.Row="5"
                          Grid.ColumnSpan="2"
                          Style="{StaticResource TextBoxStyle}"
-                         Text="{x:Bind VM.UserName, Mode=TwoWay}"/>
+                         Text="{x:Bind VM.UserName, Mode=TwoWay}"
+                         IsEnabled="{x:Bind VM.UserControlsEnabled, Mode=OneWay}"/>
                 <Button Grid.Row="7"
                         Grid.Column="1"
                         Style="{StaticResource ButtonStyle}"
                         VerticalAlignment="Top"
                         HorizontalContentAlignment="Left"
                         Content="Apply"
-                        Click="{x:Bind VM.FinishSetup}"/>
+                        Click="{x:Bind VM.FinishSetup}"
+                        Visibility="{x:Bind VM.UserControlsEnabled, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
             </Grid>
+        </Grid>
+        <Grid  Visibility="{x:Bind VM.StartScreenVisible, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/anm.gif"
+                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

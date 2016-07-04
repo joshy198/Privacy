@@ -17,7 +17,7 @@ namespace Privacy.ViewModel
         private readonly INavigationService navigationService;
         private readonly IDataService dataService;
         private readonly MainViewModel mvm;
-        public Profile UserProfile{get{ return dataService.GetUserprofile(mvm.SystemUserId); }}
+        public Profile UserProfile{ get; set; }
         public CentralMenuViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm)
         {
             this.navigationService = navigationService;
@@ -39,6 +39,11 @@ namespace Privacy.ViewModel
         public void NavigateToSettings()
         {
             navigationService.NavigateTo(Common.Navigation.Settings);
+        }
+        public async void LoadData()
+        {
+            ShowMenu = false;
+            UserProfile=(await dataService.GetUserprofile(mvm.SystemUserId.Id));
         }
         public void GoBackRequest()
         {

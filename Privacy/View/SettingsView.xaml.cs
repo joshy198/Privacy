@@ -33,6 +33,7 @@ namespace Privacy.View
         {
             ((App)Application.Current).OnBackRequested += OnOnBackRequested;
             base.OnNavigatedTo(e);
+            VM.LoadData();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

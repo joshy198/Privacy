@@ -15,8 +15,7 @@ namespace Privacy.ViewModel
         public bool ShowMenu { get; set; }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public string Mode { get; set; }
-        public string QuestionContent { get { return Question.title+"\nMode: " + Mode; } }
-        public Profile UserProfile { get { return dataService.GetUserprofile(mvm.SystemUserId); } }
+        public Profile UserProfile { get; set; }
         public string DisplayGameID { get { return Mode == Common.Mode.IsClient ? "#"+jvm.SystemGameID : "#" + cvm.SystemGameID; } }
         public Question Question { get; set; }
         private readonly INavigationService navigationService;
@@ -33,23 +32,27 @@ namespace Privacy.ViewModel
             this.jvm = jvm;
             this.cvm = cvm;
         }
-        public void LoadNewQuestion()
+        public async void LoadData()
         {
-            Question = dataService.GetQuestionByUserAndGameId(mvm.SystemUserId, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID);
+            ShowMenu = false;
+            UserProfile =await dataService.GetUserprofile(mvm.SystemUserId.Id);
+            Question = await dataService.GetQuestionByUserAndGameId(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID);
         }
         public void HambugerInteraction()
         {
             ShowMenu = !ShowMenu;
         }
-        public void NavigateToYes()
+        public async void NavigateToYes()
         {
             Answer = true;
+            if(await dataService.AnswerQuestion(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID,Question.ID,true,null))
             NavigateToLobbyView();
         }
-        public void NavigateToNo()
+        public async void NavigateToNo()
         {
             Answer = false;
-            NavigateToLobbyView();
+            if (await dataService.AnswerQuestion(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID, Question.ID, true, null))
+                NavigateToLobbyView();
         }
         public void GoBackRequest()
         {
