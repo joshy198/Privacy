@@ -12,6 +12,7 @@ namespace Privacy.ViewModel
 {
     public class JoinGameViewModel : ViewModelBase
     {
+        public bool LoadingActive { get; set; }
         public int MenuSize { get{ return ShowMenu ? 200 : 0; }}
         public bool ShowMenu { get; set; }
         private string gameId="7";
@@ -45,6 +46,7 @@ namespace Privacy.ViewModel
         }
         public async void NavigateToLobbyView()
         {
+            LoadingActive = true;
             if (ulong.TryParse(GameId, out SystemGameID))
             {
                 NotificationContent = String.Empty;
@@ -54,6 +56,7 @@ namespace Privacy.ViewModel
                 else
                     NotificationContent = "Wrong Game ID";
             }
+            LoadingActive = false;
         }
         public void GoBackRequest()
         {
@@ -61,9 +64,11 @@ namespace Privacy.ViewModel
         }
         public async void LoadData()
         {
+            LoadingActive = true;
             ShowMenu = false;
             NotificationContent = String.Empty;
             UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            LoadingActive = false;
         }
     }
 }

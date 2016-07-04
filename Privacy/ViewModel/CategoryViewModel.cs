@@ -12,6 +12,7 @@ namespace Privacy.ViewModel
 {
     public class CategoryViewModel:ViewModelBase
     {
+        public bool LoadingActive { get; set; }
         public List<Group> Groups { get; set; }
         public int SelectedGroup { get; set; }
         public bool ShowMenu { get; set; }
@@ -33,10 +34,11 @@ namespace Privacy.ViewModel
         }
         public async void NavigateToLobby()
         {
-            var rnd = new Random();
-            QuestionIDs =(await dataService.GetQuestionIdsByGroupId(Groups.ElementAt(SelectedGroup).ID)).OrderBy(item => rnd.Next()).ToList();
-            SystemGameID=(await dataService.NewGame(mvm.SystemUserId.Id, QuestionIDs.First().Id)).Id;
+            LoadingActive = true;
+            QuestionIDs=(await dataService.GetQuestionIdsByGroupId(Groups.ElementAt(SelectedGroup).ID)).ToList();
+            SystemGameID =(await dataService.NewGame(mvm.SystemUserId.Id, QuestionIDs.First().Id)).Id;
             navigationService.NavigateTo(Common.Navigation.Lobby,Common.Mode.HostStart);
+            LoadingActive = false;
         }
         public async Task<bool> GoToNextQuestion()
         {
@@ -60,11 +62,14 @@ namespace Privacy.ViewModel
         }
         public async void LoadData()
         {
+            LoadingActive = true;
             ShowMenu = false;
             SelectedGroup = -1;
             pos = 0;
             Groups = (await dataService.GetQuestionGroupsByUserId(mvm.SystemUserId.Id)).ToList();
             UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            SelectedGroup = 0;
+            LoadingActive = false;
         }
 
     }

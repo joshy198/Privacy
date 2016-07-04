@@ -110,5 +110,9 @@
                 </Grid>
             </Grid>
         </Grid>
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/start.png"
+                   Stretch="Fill"/>
+        </Grid>
     </Grid>
 </Page>

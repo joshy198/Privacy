@@ -12,8 +12,8 @@
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="64"/>
+                <RowDefinition Height="1.5*"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition/>
@@ -152,6 +152,10 @@
                             Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
+        </Grid>
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/start.png"
+                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

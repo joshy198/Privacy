@@ -13,6 +13,7 @@ namespace Privacy.ViewModel
     public class GuessViewModel:ViewModelBase
     {
 
+        public bool LoadingActive { get; set; }
         public string AnswerString { get { return SelectedAmmountOfPlayers + " of them have done that!"; } }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public bool ShowMenu { get; set; }
@@ -39,6 +40,7 @@ namespace Privacy.ViewModel
         }
         public async void NavigateToQuestion()
         {
+            LoadingActive = true;
             if (await dataService.IsGameExisting(Common.Mode.IsClient == Mode ? jvm.SystemGameID : cvm.SystemGameID))
             {
                 if (await dataService.AnswerQuestion(mvm.SystemUserId.Id, Common.Mode.IsClient == Mode ? jvm.SystemGameID : cvm.SystemGameID, qvm.Question.ID, qvm.Answer, SelectedAmmountOfPlayers))
@@ -53,6 +55,7 @@ namespace Privacy.ViewModel
             }
             else
                 NavigateToCentralMenu();
+            LoadingActive = false;
         }
         public void GoBackRequest()
         {
@@ -75,9 +78,11 @@ namespace Privacy.ViewModel
         }
         public async void LoadData()
         {
+            LoadingActive = true;
             ShowMenu = false;
             NumberOfPlayers = (await dataService.CountPlayersByGameId(Common.Mode.IsClient == Mode ? jvm.SystemGameID : cvm.SystemGameID));
             UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            LoadingActive = false;
     }
     }
 }

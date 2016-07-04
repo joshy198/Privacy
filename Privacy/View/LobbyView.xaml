@@ -13,6 +13,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
+                <RowDefinition Height="64"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -27,8 +28,8 @@
                 <TextBlock Text="Lobby"
                        Style="{StaticResource TextBlockHeaderStyle}"/>
             </Grid>
-            <TextBlock Margin="20,0,0,0" Grid.Row="1" Grid.ColumnSpan="2" Text="{x:Bind VM.PlayersListHeader, Mode=OneWay}" FontWeight="Bold" FontSize="25"/>
-            <ScrollViewer  Margin="20,0,0,0" Grid.Row="2"
+            <TextBlock Margin="20,0,0,0" Grid.Row="2" Grid.ColumnSpan="2" Text="{x:Bind VM.PlayersListHeader, Mode=OneWay}" FontWeight="Bold" FontSize="25"/>
+            <ScrollViewer  Margin="20,0,0,0" Grid.Row="3"
                        Grid.ColumnSpan="2"
                           VerticalScrollBarVisibility="Hidden" >
                 <TextBlock 
@@ -36,7 +37,7 @@
                        Text="{x:Bind VM.PlayersList, Mode=OneWay}"
                        Foreground="{StaticResource PrivacyFontColorBrush}"/>
             </ScrollViewer>
-            <Button  Grid.Row="3"
+            <Button  Grid.Row="4"
                      Grid.Column="1" 
                      Content="{x:Bind VM.ButtonText, Mode=OneWay}"
                      HorizontalContentAlignment="Left"
@@ -44,7 +45,7 @@
                      Style="{StaticResource ButtonStyle}"
                      Click="{x:Bind VM.NavigateToQuestionView}"
                      Visibility="{x:Bind VM.NextAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
-            <Button  Grid.Row="3"
+            <Button  Grid.Row="4"
                      Grid.Column="1" 
                      Content="{x:Bind VM.AdminText, Mode=OneWay}"
                      HorizontalContentAlignment="Left"
@@ -155,6 +156,10 @@
                             Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
+        </Grid>
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/start.png"
+                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

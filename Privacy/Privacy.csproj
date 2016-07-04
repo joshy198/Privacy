@@ -160,7 +160,8 @@
     <None Include="Privacy_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\anm.gif" />
+    <Content Include="Assets\pulse.png" />
+    <Content Include="Assets\start2.png" />
     <Content Include="Assets\start.png" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="Properties\Default.rd.xml" />

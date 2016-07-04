@@ -4,9 +4,8 @@ using Privacy.Model;
 using Privacy.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Privacy.ViewModel
@@ -48,13 +47,13 @@ namespace Privacy.ViewModel
         }
         public async void LoadData()
         {
+            UserControlsEnabled = false;
             if (SystemUserId.Id > 0)
                 if (await dataService.IsUserExisting(SystemUserId.Id))
                 {
                     navigationService.NavigateTo(Common.Navigation.CentralMenu);
                     return;
                 }
-            UserControlsEnabled = false;
             Languages = (await dataService.GetLanguages()).ToList();
             UserControlsEnabled = true;
 

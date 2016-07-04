@@ -41,7 +41,6 @@
                       Style="{StaticResource ComboBoxStyle}"
                       ItemsSource="{x:Bind VM.Languages, Mode=OneWay}"
                       SelectedIndex="{x:Bind VM.SelectedLanguage, Mode=TwoWay}"
-                      IsEnabled="{x:Bind VM.UserControlsEnabled, Mode=OneWay}"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"/>
             <TextBlock Grid.Row="4"
@@ -66,6 +65,10 @@
                     VerticalAlignment="Top"
                     Content="Cancel"
                     Click="{x:Bind VM.GoBackRequest}"/>
+        </Grid>
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/start.png"
+                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

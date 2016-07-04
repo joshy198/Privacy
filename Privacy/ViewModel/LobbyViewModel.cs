@@ -13,6 +13,7 @@ namespace Privacy.ViewModel
 {
     public class LobbyViewModel:ViewModelBase
     {
+        public bool LoadingActive { get; set; }
         public bool ShowMenu { get; set; }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public string Mode { get;
@@ -84,13 +85,16 @@ namespace Privacy.ViewModel
         }
         public async void LoadData()
         {
+            LoadingActive = true;
             ShowMenu = false;
             NextAvailable = false;
             UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
             ReloadPlayers();
+            LoadingActive = false;
         }
         public async void EnableNext()
         {
+            LoadingActive = true;
             if (await dataService.IsGameExisting(cvm.SystemGameID))
             {
                 if (Common.Mode.HostWait == Mode)
@@ -100,6 +104,7 @@ namespace Privacy.ViewModel
             }
             else
             NavigateToCentralMenu();
+            LoadingActive = false;
         }
         
         public void HambugerInteraction()
@@ -219,6 +224,7 @@ namespace Privacy.ViewModel
         }
         public async void NavigateToQuestionView()
         {
+            LoadingActive = true;
             if (Common.Mode.HostStart == Mode)
             {
                 navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsHost);
@@ -256,6 +262,11 @@ namespace Privacy.ViewModel
             {
                 navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsClient);
             }
+            LoadingActive = false;
         }
+
+        private async void DataLoading()
+        { }
+
     }
 }

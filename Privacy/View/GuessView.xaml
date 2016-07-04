@@ -13,7 +13,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
-                <RowDefinition/>
+                <RowDefinition Height="1.5*"/>
                 <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="0.5*"/>
                 <RowDefinition/>
@@ -155,6 +155,10 @@
                             Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
+        </Grid>
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/start.png"
+                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

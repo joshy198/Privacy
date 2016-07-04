@@ -12,6 +12,7 @@ namespace Privacy.ViewModel
 {
     public class QuestionViewModel :ViewModelBase
     {
+        public bool LoadingActive { get; set; }
         public bool ShowMenu { get; set; }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public string Mode { get; set; }
@@ -34,9 +35,11 @@ namespace Privacy.ViewModel
         }
         public async void LoadData()
         {
+            LoadingActive = true;
             ShowMenu = false;
             UserProfile =await dataService.GetUserprofile(mvm.SystemUserId.Id);
             Question = await dataService.GetQuestionByUserAndGameId(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID);
+            LoadingActive = false;
         }
         public void HambugerInteraction()
         {
@@ -44,15 +47,19 @@ namespace Privacy.ViewModel
         }
         public async void NavigateToYes()
         {
+            LoadingActive = true;
             Answer = true;
             if(await dataService.AnswerQuestion(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID,Question.ID,true,null))
             NavigateToLobbyView();
+            LoadingActive = false;
         }
         public async void NavigateToNo()
         {
+            LoadingActive = true;
             Answer = false;
             if (await dataService.AnswerQuestion(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID, Question.ID, true, null))
                 NavigateToLobbyView();
+            LoadingActive = false;
         }
         public void GoBackRequest()
         {
