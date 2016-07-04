@@ -14,6 +14,7 @@ namespace Privacy.ViewModel
     public class LobbyViewModel:ViewModelBase
     {
         public bool LoadingActive { get; set; }
+        public bool isActive;
         public bool ShowMenu { get; set; }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public string Mode { get;
@@ -48,7 +49,6 @@ namespace Privacy.ViewModel
                     return "Continue";
                 else if (Common.Mode.IsClient == Mode)
                 {
-                    NextAvailable = true;
                     return "Start";
                 }
                 return "ERR";
@@ -89,8 +89,10 @@ namespace Privacy.ViewModel
             ShowMenu = false;
             NextAvailable = false;
             UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
-            ReloadPlayers();
+            PlayersList = string.Empty;
+            PlayersListHeader = string.Empty;
             LoadingActive = false;
+            DataLoading();
         }
         public async void EnableNext()
         {
@@ -120,16 +122,17 @@ namespace Privacy.ViewModel
         }
         public async void ReloadPlayers()
         {
-            PlayersList = string.Empty;
             if (Common.Mode.HostStart == Mode)
             {
                 if (await dataService.IsGameExisting(cvm.SystemGameID))
                 {
                     PlayersListHeader = "Game ID " + cvm.SystemGameID;
+                    string data = "";
                     foreach (var v in await dataService.GetPlayersInGame(cvm.SystemGameID))
                     {
-                        PlayersList += v.Title + "\n";
+                        data += v.Title + "\n";
                     }
+                    PlayersList = data;
                 }
                 else
                     NavigateToCentralMenu();
@@ -138,11 +141,14 @@ namespace Privacy.ViewModel
             {
                 if (await dataService.IsGameExisting(jvm.SystemGameID))
                 {
+                    string data = "";
                     PlayersListHeader = "Players";
                     foreach (var v in await dataService.GetPlayersInGame(jvm.SystemGameID))
                     {
-                        PlayersList += v.Title + "\n";
+                        data += v.Title + "\n";
                     }
+                    PlayersList = data;
+                    NextAvailable = true;
                 }
                 else
                     NavigateToCentralMenu();
@@ -151,12 +157,14 @@ namespace Privacy.ViewModel
             {
                 if (await dataService.IsGameExisting(jvm.SystemGameID))
                 {
+                    string data = "";
                     NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
                     PlayersListHeader = "Answered Players";
                     foreach (var v in await dataService.GetAnsweredUsers(jvm.SystemGameID))
                     {
-                        PlayersList += v.Title + "\n";
+                        data += v.Title + "\n";
                     }
+                    PlayersList = data;
                 }
                 else
                     NavigateToCentralMenu();
@@ -165,11 +173,14 @@ namespace Privacy.ViewModel
             {
                 if (await dataService.IsGameExisting(cvm.SystemGameID))
                 {
+                    string data = "";
                     PlayersListHeader = "Answered Players";
                     foreach (var v in await dataService.GetAnsweredUsers(cvm.SystemGameID))
                     {
-                        PlayersList += v.Title + "\n";
+                        data += v.Title + "\n";
                     }
+                    PlayersList = data;
+
                 }
                 else
                     NavigateToCentralMenu();
@@ -178,17 +189,20 @@ namespace Privacy.ViewModel
             {
                 if (await dataService.IsGameExisting(jvm.SystemGameID))
                 {
+                    string data = "";
+                    NextAvailable = !await dataService.IsContinueAllowed(jvm.SystemGameID);
                     PlayersListHeader = "Player\t\tDifference\tTotal";
                     foreach (var v in (await dataService.GetStatisticByGameId(jvm.SystemGameID)).OrderByDescending(x => x.Points))
                     {
                         if (v.Name.Length > 15)
                             v.Name = v.Name.Remove(15);
-                        PlayersList += v.Name.PadRight(15, ' ');
+                        data += v.Name.PadRight(15, ' ');
                         if (v.Name.Length < 10)
-                            PlayersList += "\t";
-                        PlayersList += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
+                            data += "\t";
+                        data += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
                         //PlayersList += ""+v.name + "\n\n";
                     }
+                    PlayersList = data;
                 }
                 else
                     NavigateToCentralMenu();
@@ -197,6 +211,7 @@ namespace Privacy.ViewModel
             {
                 if (await dataService.IsGameExisting(cvm.SystemGameID))
                 {
+                    string data = "";
                     PlayersListHeader = "Player\t\tDifference\tTotal";
                     foreach (var v in (await dataService.GetStatisticByGameId(cvm.SystemGameID)).OrderByDescending(x => x.Points))
                     {
@@ -208,6 +223,7 @@ namespace Privacy.ViewModel
                         PlayersList += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
                         //PlayersList += ""+v.name + "\n\n";
                     }
+                    PlayersList = data;
                 }
                 else
                     NavigateToCentralMenu();
@@ -265,8 +281,15 @@ namespace Privacy.ViewModel
             LoadingActive = false;
         }
 
-        private async void DataLoading()
-        { }
+        private async Task DataLoading()
+        {
+            while (isActive)
+            {
+                await Task.Delay(4000);
+                if (isActive)
+                    ReloadPlayers();
+            }
+        }
 
     }
 }
