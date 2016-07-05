@@ -9,8 +9,7 @@ namespace Privacy.Services
 {
     public interface IDataService
     {
-        Task<bool> AllowCounting(UInt64 UserId,UInt64 GameId);
-        Task<bool> AllowStatistics(UInt64 UserId, UInt64 GameId);
+        Task<bool> AllowContinue(UInt64 UserId,UInt64 GameId);
         Task<bool> AnswerQuestion(UInt64 UserId, UInt64 GameId, UInt64 QuestionId, bool YNAnswer, int? cnt_answer);
         Task<bool> ChangeLanguage(UInt64 UserId, UInt64 LanguageId);
         Task<bool> ChangeUserName(UInt64 UserId, string Name);
@@ -30,5 +29,6 @@ namespace Privacy.Services
         Task<ID> NewGame(UInt64 UserId, UInt64 QuestionId);
         Task<bool> IsUserExisting(ulong UserId);
         Task<bool> IsGameExisting(ulong UserId);
+        Task<bool> QuitGame(ulong UserId);
     }
 }

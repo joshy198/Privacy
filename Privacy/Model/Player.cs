@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Privacy.Model
 {
+    /// <summary>
+    /// object of type player containing the player's id and the players name
+    /// </summary>
     public class Player
     {
         [JsonProperty("id")]
         public ulong ID { get; set; }
-        [JsonProperty("show_stat")]
-        public bool  ShowStatistic { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
     }

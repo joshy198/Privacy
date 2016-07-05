@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Privacy.Model
 {
+    /// <summary>
+    /// Object of type Question, containing the question's id and the title in the user's language
+    /// </summary>
     public class Question
     {
         [JsonProperty("id")]

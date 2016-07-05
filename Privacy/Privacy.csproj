@@ -96,11 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Navigation.cs" />
-    <Compile Include="Converters\BrugermenuButtonForegroundConverter.cs" />
-    <Compile Include="Converters\BurgermenuButtonBackgroundConverter.cs" />
-    <Compile Include="Converters\BurgerMenuSizeConverter.cs" />
     <Compile Include="Converters\ButtonVisibilityConverter.cs" />
-    <Compile Include="Converters\LanguageToObjectConverter.cs" />
     <Compile Include="JsonObj\JsonGroup.cs" />
     <Compile Include="JsonObj\JsonIDs.cs" />
     <Compile Include="JsonObj\JsonLang.cs" />
@@ -118,6 +114,7 @@
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\LocalStorageService.cs" />
+    <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\CentralMenuViewModel.cs" />
     <Compile Include="ViewModel\GuessViewModel.cs" />
@@ -127,6 +124,9 @@
     <Compile Include="ViewModel\QuestionViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CategoryView.xaml.cs">
       <DependentUpon>CategoryView.xaml</DependentUpon>
     </Compile>
@@ -178,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

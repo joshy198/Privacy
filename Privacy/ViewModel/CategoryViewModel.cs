@@ -12,34 +12,50 @@ namespace Privacy.ViewModel
 {
     public class CategoryViewModel:ViewModelBase
     {
+        #region variables
+
+        #region public variables
         public bool LoadingActive { get; set; }
         public List<Group> Groups { get; set; }
         public int SelectedGroup { get; set; }
         public bool ShowMenu { get; set; }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
+        public Profile UserProfile { get; set; }
+        public ulong SystemGameID { get; set; }
+        #endregion
+
+        #region private variables
+        private List<ID> QuestionIDs { get; set; }
+        private int pos = 0;
+        #endregion
+
+        #region private readonly variables
         private readonly INavigationService navigationService;
         private readonly IDataService dataService;
         private readonly MainViewModel mvm;
-        public Profile UserProfile { get; set; }
-        public ulong SystemGameID { get; set; }
-        private List<ID> QuestionIDs { get; set; }
-        private int pos=0;
+        #endregion
+
+        #endregion
+
+        /// <summary>
+        /// Constructor of the CategoryViewModel
+        /// Sets the given parameters to private readonly fields
+        /// </summary>
+        /// <param name="navigationService">Instance of an implementation of GalaSoft's INavigationService Interface</param>
+        /// <param name="dataService">Instance of an Implementation of the IDataService Interface</param>
+        /// <param name="mvm">Instance of the MainViewModel</param>
         public CategoryViewModel(INavigationService navigationService, IDataService dataService,MainViewModel mvm)
         {
             SelectedGroup = -1;
-            //Groups = new List<Group> { new Group { id = 1, title = "Group 1" }, new Group { id = 2, title = "Group 2" } };
             this.navigationService = navigationService;
             this.dataService = dataService;
             this.mvm = mvm;
         }
-        public async void NavigateToLobby()
-        {
-            LoadingActive = true;
-            QuestionIDs=(await dataService.GetQuestionIdsByGroupId(Groups.ElementAt(SelectedGroup).ID)).ToList();
-            SystemGameID =(await dataService.NewGame(mvm.SystemUserId.Id, QuestionIDs.First().Id)).Id;
-            navigationService.NavigateTo(Common.Navigation.Lobby,Common.Mode.HostStart);
-            LoadingActive = false;
-        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> GoToNextQuestion()
         {
             pos++;
@@ -48,18 +64,47 @@ namespace Privacy.ViewModel
                     return true;
             return false;
         }
-        public void NavigateToSettings()
-        {
-            navigationService.NavigateTo(Common.Navigation.Settings);
-        }
+
         public void HambugerInteraction()
         {
             ShowMenu = !ShowMenu;
         }
+
+        #region Navigation
+        /// <summary>
+        /// Loads All the Questions of the selected Group
+        /// creates a new game
+        /// navigates to the LobbyView
+        /// </summary>
+        public async void NavigateToLobby()
+        {
+            LoadingActive = true;
+            QuestionIDs=(await dataService.GetQuestionIdsByGroupId(Groups.ElementAt(SelectedGroup).ID)).ToList();
+            SystemGameID =(await dataService.NewGame(mvm.SystemUserId.Id, QuestionIDs.First().Id)).Id;
+            navigationService.NavigateTo(Common.Navigation.Lobby,Common.Mode.HostStart);
+            LoadingActive = false;
+        }
+        
+        /// <summary>
+        /// Navigates to the Settings Page
+        /// </summary>
+        public void NavigateToSettings()
+        {
+            navigationService.NavigateTo(Common.Navigation.Settings);
+        }
+        
+        /// <summary>
+        /// Navigates to the CentralMenu Page
+        /// </summary>
         public void GoBackRequest()
         {
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
+        #endregion
+
+        /// <summary>
+        /// Loads the Data Needed for this Page
+        /// </summary>
         public async void LoadData()
         {
             LoadingActive = true;

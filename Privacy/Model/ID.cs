@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Privacy.Model
 {
+    /// <summary>
+    /// Object of type ID containing an ID
+    /// </summary>
     public class ID
     {
         [JsonProperty("id")]

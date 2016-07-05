@@ -75,7 +75,7 @@
                   Padding="10,0,0,60">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
-                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="80"/>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="160"/>
                     <RowDefinition/>
@@ -83,8 +83,9 @@
                 <TextBlock Grid.Row="0" Text="{x:Bind VM.DisplayGameID, Mode=OneWay}" TextAlignment="Right" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,25,0"/>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="35"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20"/>
@@ -95,21 +96,25 @@
                                Text="&#xE80F;"
                                VerticalAlignment="Center"
                                TextAlignment="Right"
+                               FontSize="20"
                                FontFamily="Segoe MDL2 Assets"/>
                     <Button Grid.Row="0"
                             Grid.Column="1"
+                            FontSize="20"
                         Style="{StaticResource HamburgerContentButtonStyle}"
                         Content="Home"
                             Click="{x:Bind VM.NavigateToCentralMenu}"/>
-                    <TextBlock Grid.Row="1"
+                    <TextBlock Grid.Row="2"
                                Style="{StaticResource BurgerContent}"
                                Text="&#xE711;"
                                VerticalAlignment="Center"
                                TextAlignment="Right"
+                               FontSize="20"
                                FontFamily="Segoe MDL2 Assets"/>
-                    <Button Grid.Row="1"
+                    <Button Grid.Row="2"
                             Grid.Column="1"
                         Style="{StaticResource HamburgerContentButtonStyle}"
+                            FontSize="20"
                         Content="Quit"
                         Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
@@ -133,7 +138,7 @@
                 <Grid Grid.Row="4">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="35"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20"/>
@@ -144,18 +149,17 @@
                                Text="&#xE713;"
                                VerticalAlignment="Center"
                                TextAlignment="Right"
+                               FontSize="20"
                                FontFamily="Segoe MDL2 Assets"/>
                     <Button Grid.Row="4"
                             Grid.Column="1"
                         Style="{StaticResource HamburgerContentButtonStyle}"
+                            FontSize="20"
                         Content="Settings"
                             Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
-            <Image Source= "ms-appx:///Assets/start.png"
-                   Stretch="Fill"/>
-        </Grid>
+
     </Grid>
 </Page>

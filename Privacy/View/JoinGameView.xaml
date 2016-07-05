@@ -1,13 +1,22 @@
 ﻿<Page
-    x:Class="Privacy.View.JoinGameView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Privacy.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    x:Class="Privacy.View.JoinGameView"
     mc:Ignorable="d"
-    DataContext="{Binding Source={StaticResource Locator},
-    Path=JoinGameViewModel}">
+    >
+    <Page.Resources>
+        <Storyboard x:Name="LoadingAnimation" RepeatBehavior="Forever" AutoReverse="True">
+            <DoubleAnimation Duration="0:0:1" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image" d:IsOptimized="True"/>
+        </Storyboard>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <Binding Path="JoinGameViewModel" Source="{StaticResource Locator}"/>
+    </Page.DataContext>
 
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
@@ -23,32 +32,33 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0"
-                  Grid.ColumnSpan="2"
-                  Background="{StaticResource PrivacySystemColorBrush}">
+				Grid.ColumnSpan="2"
+				Background="{StaticResource PrivacySystemColorBrush}">
                 <TextBlock Text="Join"
-                       Style="{StaticResource TextBlockHeaderStyle}"/>
+					Style="{StaticResource TextBlockHeaderStyle}"/>
             </Grid>
             <TextBlock Grid.Row="1"
-                           Grid.ColumnSpan="2"
-                           Text="{x:Bind VM.NotificationContent, Mode=OneWay}"
-                           Style="{StaticResource TextBlockStyle}"
-                       Foreground="Red"/>
+				Grid.ColumnSpan="2"
+				Text="{x:Bind VM.NotificationContent, Mode=OneWay}"
+				Style="{StaticResource TextBlockStyle}"
+				Foreground="Red"/>
             <TextBlock Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           Text="Game ID"
-                           Style="{StaticResource TextBlockStyle}"/>
+				Grid.ColumnSpan="2"
+				Text="Game ID"
+				Style="{StaticResource TextBlockStyle}"/>
             <TextBox Grid.Row="3"
-                     Grid.ColumnSpan="2"
-                     VerticalAlignment="Top"
-                     Style="{StaticResource TextBoxStyle}"
-                     Text="{Binding GameId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				Grid.ColumnSpan="2"
+				VerticalAlignment="Top"
+				Style="{StaticResource TextBoxStyle}"
+				InputScope="Number"
+				Text="{Binding GameId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Grid.Row="4"
-                        Grid.Column="1"
-                        Style="{StaticResource ButtonStyle}"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Left"
-                        Content="Join"
-                    Click="{x:Bind VM.NavigateToLobbyView}"/>
+				Grid.Column="1"
+				Style="{StaticResource ButtonStyle}"
+				VerticalAlignment="Top"
+				HorizontalContentAlignment="Left"
+				Content="Join"
+				Click="{x:Bind VM.NavigateToLobbyView}"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -58,8 +68,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button
-                    Style="{StaticResource BurgerBackgroundButton}"
-                    Visibility="{x:Bind VM.ShowMenu, Mode=OneWay,Converter={StaticResource VisibilityConverter}}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
+				Style="{StaticResource BurgerBackgroundButton}"
+				Visibility="{x:Bind VM.ShowMenu, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" Click="{x:Bind VM.HambugerInteraction}" VerticalAlignment="Stretch"/>
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -70,13 +80,13 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0"
-                    Style="{StaticResource HamburgerButtonStyle}"
-                    Click="{x:Bind VM.HambugerInteraction}"/>
+				Style="{StaticResource HamburgerButtonStyle}"
+				Click="{x:Bind VM.HambugerInteraction}"/>
             <Grid Grid.Row="1"
-                  Width="{x:Bind VM.MenuSize, Mode=OneWay}"
-                  HorizontalAlignment="Left"
-                  Background="{StaticResource PrivacySystemColorBrush}"
-                  Padding="10,0,0,60">
+				Width="{x:Bind VM.MenuSize, Mode=OneWay}"
+				HorizontalAlignment="Left"
+				Background="{StaticResource PrivacySystemColorBrush}"
+				Padding="10,0,0,60">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="160"/>
@@ -102,29 +112,37 @@
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="35"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="1"
-                               Style="{StaticResource BurgerContent}"
-                               Text="&#xE713;"
-                               VerticalAlignment="Center"
-                               TextAlignment="Right"
-                               FontFamily="Segoe MDL2 Assets"/>
+						Style="{StaticResource BurgerContent}"
+						Text="&#xE713;"
+						VerticalAlignment="Center"
+						TextAlignment="Right"
+                               FontSize="20"
+						FontFamily="Segoe MDL2 Assets"/>
                     <Button Grid.Row="1"
-                            Grid.Column="1"
-                        Style="{StaticResource HamburgerContentButtonStyle}"
-                        Content="Settings"
-                            Click="{x:Bind VM.NavigateToSettings}"/>
+						Grid.Column="1"
+						Style="{StaticResource HamburgerContentButtonStyle}"
+                            FontSize="20"
+						Content="Settings"
+						Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
-            <Image Source= "ms-appx:///Assets/start.png"
-                   Stretch="Fill"/>
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+            <Interactivity:Interaction.Behaviors>
+                <Core:DataTriggerBehavior Binding="{Binding LoadingActive, Converter={StaticResource VisibilityConverter}}" Value="Visible"/>
+            </Interactivity:Interaction.Behaviors>
+            <Image Source= "ms-appx:///Assets/start2.png"
+				Stretch="Fill"/>
+            <Image x:Name="image" Source= "ms-appx:///Assets/pulse.png"
+				Stretch="Fill">
+            </Image>
         </Grid>
     </Grid>
 </Page>

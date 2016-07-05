@@ -12,10 +12,12 @@ namespace Privacy.ViewModel
 {
     public class JoinGameViewModel : ViewModelBase
     {
+        #region variables
+
+        #region public variables
         public bool LoadingActive { get; set; }
         public int MenuSize { get{ return ShowMenu ? 200 : 0; }}
         public bool ShowMenu { get; set; }
-        private string gameId="7";
         public string GameId { get { return gameId; }
             set {
                 ulong result;
@@ -24,26 +26,59 @@ namespace Privacy.ViewModel
                 else
                     RaisePropertyChanged(nameof(GameId));                }
         }
-        private readonly INavigationService navigationService;
-        private readonly IDataService dataService;
-        private readonly MainViewModel mvm;
         public string NotificationContent { get; set; }
         public ulong SystemGameID = 0;
         public Profile UserProfile { get; set; }
+        #endregion
+
+        #region private variables
+        private string gameId = "7";
+        #endregion
+
+        #region private readonly variables
+        private readonly INavigationService navigationService;
+        private readonly IDataService dataService;
+        private readonly MainViewModel mvm;
+        #endregion
+
+        #endregion
+
+        /// <summary>
+        /// Constructor of the JoinGameViewModel, sets the given parameters to readonly fields
+        /// </summary>
+        /// <param name="navigationService">Instance of an implementation of GalaSoft's INavigationService Interface</param>
+        /// <param name="dataService">Instance of an Implementation of the IDataService Interface</param>
+        /// <param name="mvm">Instance of the MainViewModel</param>
         public JoinGameViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm)
         {
             this.navigationService = navigationService;
             this.dataService = dataService;
             this.mvm = mvm;
         }
-        public void NavigateToSettings()
-        {
-            navigationService.NavigateTo(Common.Navigation.Settings);
-        }
+
+        /// <summary>
+        /// Shows/Hides the Hamburger Menu on this page
+        /// </summary>
         public void HambugerInteraction()
         {
             ShowMenu = !ShowMenu;
         }
+
+        #region Navigation
+
+        /// <summary>
+        /// Navigates to the Settings Page
+        /// </summary>
+        public void NavigateToSettings()
+        {
+            navigationService.NavigateTo(Common.Navigation.Settings);
+        }
+
+        /// <summary>
+        /// Trys to join the Game given by the ID which can be modifyd by the user
+        /// if it succeeds, it navigates to the LobbyView and hands over the Mode Parameter
+        /// if not, it's showing a Message on the page
+        /// </summary>
         public async void NavigateToLobbyView()
         {
             LoadingActive = true;
@@ -58,10 +93,20 @@ namespace Privacy.ViewModel
             }
             LoadingActive = false;
         }
+
+        /// <summary>
+        /// When called, it navigates to the CentralMenu Page
+        /// </summary>
         public void GoBackRequest()
         {
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
+        #endregion
+
+        /// <summary>
+        /// Loads the Data needed for the Page
+        /// Allways called when Navigated to the Page
+        /// </summary>
         public async void LoadData()
         {
             LoadingActive = true;

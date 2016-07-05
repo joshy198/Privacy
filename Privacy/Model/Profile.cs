@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Privacy.Model
 {
+    /// <summary>
+    /// Object of type Profile containing the user's id, his points, his name, and his language as an object of type language
+    /// </summary>
     public class Profile
     {
         [JsonProperty("id")]

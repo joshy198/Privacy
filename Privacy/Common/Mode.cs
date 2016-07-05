@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Privacy.Common
 {
+    /// <summary>
+    /// static class Mode containing a string for every plausible mode
+    /// </summary>
     public static class Mode
     {
         public static readonly string HostStart = "HostStart";

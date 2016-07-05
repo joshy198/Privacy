@@ -13,6 +13,8 @@ namespace Privacy.ViewModel
 {
     public class LobbyViewModel:ViewModelBase
     {
+        #region variables
+        #region public variables
         public bool LoadingActive { get; set; }
         public bool isActive;
         public bool ShowMenu { get; set; }
@@ -37,7 +39,7 @@ namespace Privacy.ViewModel
                     return "Continue";
                 else if (Common.Mode.HostStatistic == Mode)
                 {
-                    //NextAvailable = true;
+                    NextAvailable = true;
                     return "Continue";
                 }
                 else if (Common.Mode.HostWait == Mode)
@@ -70,11 +72,25 @@ namespace Privacy.ViewModel
         }
         public string PlayersListHeader { get; set; }
         public Profile UserProfile { get; set; }
+        #endregion
+        #region private readonly variables
         private readonly INavigationService navigationService;
         private readonly IDataService dataService;
         private readonly JoinGameViewModel jvm;
         private readonly CategoryViewModel cvm;
         private readonly MainViewModel mvm;
+        #endregion
+        #endregion
+
+        /// <summary>
+        /// Constructor of the LobbyViewModel
+        /// Sets the given parameters to private readonly fields
+        /// </summary>
+        /// <param name="navigationService">Instance of an implementation of Gaasoft's INavigationService Interface</param>
+        /// <param name="dataService">Instance of an implementation of the IDataServiceInterface</param>
+        /// <param name="jvm">Instance of of the JoinViewModel</param>
+        /// <param name="cvm">Instance of of the CategoryViewModel</param>
+        /// <param name="mvm">Instance of of the MainViewModel</param>
         public LobbyViewModel(INavigationService navigationService, IDataService dataService, JoinGameViewModel jvm, CategoryViewModel cvm, MainViewModel mvm)
         {
             this.navigationService = navigationService;
@@ -83,43 +99,33 @@ namespace Privacy.ViewModel
             this.cvm = cvm;
             this.mvm = mvm;
         }
-        public async void LoadData()
-        {
-            LoadingActive = true;
-            ShowMenu = false;
-            NextAvailable = false;
-            UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
-            PlayersList = string.Empty;
-            PlayersListHeader = string.Empty;
-            LoadingActive = false;
-            DataLoading();
-        }
+
+        /// <summary>
+        /// Enables the Guessing Area as an Game Master
+        /// </summary>
         public async void EnableNext()
         {
             LoadingActive = true;
             if (await dataService.IsGameExisting(cvm.SystemGameID))
             {
                 if (Common.Mode.HostWait == Mode)
-                    NextAvailable = await dataService.AllowCounting(mvm.SystemUserId.Id, cvm.SystemGameID);
-                else if (Common.Mode.HostStatistic == Mode)
-                    NextAvailable = await dataService.AllowStatistics(mvm.SystemUserId.Id, cvm.SystemGameID);
+                    NextAvailable = await dataService.AllowContinue(mvm.SystemUserId.Id, cvm.SystemGameID);
             }
             else
             NavigateToCentralMenu();
             LoadingActive = false;
         }
         
+        /// <summary>
+        /// Shows/Hides the Hamburger Menu
+        /// </summary>
         public void HambugerInteraction()
         {
             ShowMenu = !ShowMenu;
         }
-        public void GoBackRequest()
-        {
-            if (Mode == Common.Mode.HostStart || Mode == Common.Mode.HostStatistic || Mode == Common.Mode.HostWait)
-                navigationService.NavigateTo(Common.Navigation.Category);
-            else
-                navigationService.NavigateTo(Common.Navigation.Join);
-        }
+        /// <summary>
+        /// Loads and displays the list of Information depending on the current Mode
+        /// </summary>
         public async void ReloadPlayers()
         {
             if (Common.Mode.HostStart == Mode)
@@ -199,7 +205,7 @@ namespace Privacy.ViewModel
                         data += v.Name.PadRight(15, ' ');
                         if (v.Name.Length < 10)
                             data += "\t";
-                        data += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
+                        data += String.Format("{0,9}\t\t{1}\n", v.Difference, v.Points);
                         //PlayersList += ""+v.name + "\n\n";
                     }
                     PlayersList = data;
@@ -220,7 +226,7 @@ namespace Privacy.ViewModel
                         PlayersList += v.Name.PadRight(15, ' ');
                         if (v.Name.Length < 10)
                             PlayersList += "\t";
-                        PlayersList += String.Format("{0,9}\t\t{1}\n", Math.Abs(v.Guessed - v.Yeses), v.Points);
+                        PlayersList += String.Format("{0,9}\t\t{1}\n", v.Difference, v.Points);
                         //PlayersList += ""+v.name + "\n\n";
                     }
                     PlayersList = data;
@@ -230,14 +236,32 @@ namespace Privacy.ViewModel
             }
         }
 
+        #region Navigation
+
+        /// <summary>
+        /// Quits the Game and navigates to the Central Menu
+        /// </summary>
         public void NavigateToCentralMenu()
         {
+            dataService.QuitGame(mvm.SystemUserId.Id);
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
-            public void NavigateToSettings()
+
+        /// <summary>
+        /// Navigates to the Settings View
+        /// </summary>
+        public void NavigateToSettings()
         {
             navigationService.NavigateTo(Common.Navigation.Settings);
         }
+
+        /// <summary>
+        /// Navigating to the QuestionView
+        /// Depending on the State it's handing over parameters and
+        /// sets the next question ID
+        /// if there are no more questions it's giving a feedback to the User and navigates to the 
+        /// CategoryView
+        /// </summary>
         public async void NavigateToQuestionView()
         {
             LoadingActive = true;
@@ -281,6 +305,24 @@ namespace Privacy.ViewModel
             LoadingActive = false;
         }
 
+        /// <summary>
+        /// Navigates Back to the CategoryView or the JoinView depending on the current Mode
+        /// </summary>
+        public void GoBackRequest()
+        {
+            dataService.QuitGame(mvm.SystemUserId.Id);
+            if (Mode == Common.Mode.HostStart || Mode == Common.Mode.HostStatistic || Mode == Common.Mode.HostWait)
+                navigationService.NavigateTo(Common.Navigation.Category);
+            else
+                navigationService.NavigateTo(Common.Navigation.Join);
+        }
+        #endregion
+
+        /// <summary>
+        /// Task, that's reloading the List of Data (Players or Statistics) while the user is on the page
+        /// stops as soon as the User leaves this page
+        /// </summary>
+        /// <returns>returns nothing</returns>
         private async Task DataLoading()
         {
             while (isActive)
@@ -291,5 +333,21 @@ namespace Privacy.ViewModel
             }
         }
 
+        /// <summary>
+        /// Loads the data needed on the page
+        /// and sets some parameters
+        /// This function is called when navigated to this Page
+        /// </summary>
+        public async void LoadData()
+        {
+            LoadingActive = true;
+            ShowMenu = false;
+            NextAvailable = false;
+            UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
+            PlayersList = string.Empty;
+            PlayersListHeader = string.Empty;
+            LoadingActive = false;
+            DataLoading();
+        }
     }
 }

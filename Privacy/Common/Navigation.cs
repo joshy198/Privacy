@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Privacy.Common
 {
+    /// <summary>
+    /// Static class Navigation containing a string for every page
+    /// </summary>
     public static class Navigation
     {
         public static string Category = "Category";
@@ -17,5 +20,6 @@ namespace Privacy.Common
         public static string CentralMenu = "CentralMenu";
         public static string Lobby = "Lobby";
         public static string Join = "Join";
+        public static string About = "About";
     }
 }

@@ -14,6 +14,9 @@ namespace Privacy.ViewModel
 {
     public class ViewModelLocator
     {
+        /// <summary>
+        /// Static class ViewModellocator, registers all ViewModels und Services to the GalaSoft SimpleIoc
+        /// </summary>
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
@@ -25,11 +28,13 @@ namespace Privacy.ViewModel
             SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<JoinGameViewModel>();
             SimpleIoc.Default.Register<LobbyViewModel>();
+            SimpleIoc.Default.Register<AboutViewModel>();
             SimpleIoc.Default.Register(RegisterNavigationService);
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IStorageService, LocalStorageService>();
             SimpleIoc.Default.Register<IDataService, ConcreteDataService>();
         }
+        #region ViewModels
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();
         public CategoryViewModel CategoryViewModel => ServiceLocator.Current.GetInstance<CategoryViewModel>();
         public GuessViewModel GuessViewModel => ServiceLocator.Current.GetInstance<GuessViewModel>();
@@ -38,6 +43,13 @@ namespace Privacy.ViewModel
         public CentralMenuViewModel CentralMenuViewModel => ServiceLocator.Current.GetInstance<CentralMenuViewModel>();
         public JoinGameViewModel JoinGameViewModel => ServiceLocator.Current.GetInstance<JoinGameViewModel>();
         public LobbyViewModel LobbyViewModel => ServiceLocator.Current.GetInstance<LobbyViewModel>();
+        public AboutViewModel AboutViewModel => ServiceLocator.Current.GetInstance<AboutViewModel>();
+        #endregion
+
+        /// <summary>
+        /// Configuration of the NavigationService
+        /// </summary>
+        /// <returns>Returns an Implementation of GalaSoft'S INavigationService, which is configured to be able to Navigate to all Views</returns>
         private static INavigationService RegisterNavigationService()
         {
             var service = new NavigationService();
@@ -49,6 +61,7 @@ namespace Privacy.ViewModel
             service.Configure(Navigation.CentralMenu, typeof(CentralMenuView));
             service.Configure(Navigation.Join, typeof(JoinGameView));
             service.Configure(Navigation.Lobby, typeof(LobbyView));
+            service.Configure(Navigation.About, typeof(AboutView));
             return service;
         }
     }

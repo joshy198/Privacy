@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Privacy
 {
+    /// <summary>
+    /// Object of type Language, containing the language's id and it's title
+    /// </summary>
     public class Language
     {
         [JsonProperty("id")]
