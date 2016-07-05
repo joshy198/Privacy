@@ -343,7 +343,7 @@ namespace Privacy.ViewModel
             LoadingActive = true;
             ShowMenu = false;
             NextAvailable = false;
-            UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
+            UserProfile = mvm.SystemUserProfile;
             PlayersList = string.Empty;
             PlayersListHeader = string.Empty;
             LoadingActive = false;

@@ -93,7 +93,7 @@ namespace Privacy.ViewModel
             App.Current.Exit();
         }
         #endregion
-
+ 
         /// <summary>
         /// Loads the Data needed for this page
         /// Is allways called when navigated to this page
@@ -101,7 +101,11 @@ namespace Privacy.ViewModel
         public async void LoadData()
         {
             ShowMenu = false;
-            UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            while (UserProfile == null)
+            {
+                await Task.Delay(1000);
+                UserProfile = mvm.SystemUserProfile;
+            }
         }
     }
 }

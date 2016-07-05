@@ -56,6 +56,7 @@ namespace Privacy.ViewModel
             if (profile.Lang.Id != Languages.ElementAt(SelectedLanguage).Id)
                 await dataService.ChangeLanguage(mvm.SystemUserId.Id, Languages.ElementAt(SelectedLanguage).Id);
             GoBackRequest();
+            mvm.ReloadUserProfile();
             LoadingActive = false;
         }
         /// <summary>
@@ -66,7 +67,7 @@ namespace Privacy.ViewModel
             LoadingActive = true;
             SelectedLanguage = -1;
             Languages = (await dataService.GetLanguages()).ToList();
-            profile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            profile = mvm.SystemUserProfile;
             SelectedLanguage = Languages.IndexOf(Languages.Where(x => x.Id == profile.Lang.Id).FirstOrDefault());
             Username = profile.Name;
             LoadingActive = false;

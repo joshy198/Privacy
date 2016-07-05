@@ -112,7 +112,7 @@ namespace Privacy.ViewModel
             SelectedGroup = -1;
             pos = 0;
             Groups = (await dataService.GetQuestionGroupsByUserId(mvm.SystemUserId.Id)).ToList();
-            UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            UserProfile = mvm.SystemUserProfile;
             SelectedGroup = 0;
             LoadingActive = false;
         }

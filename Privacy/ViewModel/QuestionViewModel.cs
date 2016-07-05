@@ -129,7 +129,8 @@ namespace Privacy.ViewModel
         {
             LoadingActive = true;
             ShowMenu = false;
-            UserProfile = await dataService.GetUserprofile(mvm.SystemUserId.Id);
+            mvm.ReloadUserProfile();
+            UserProfile = mvm.SystemUserProfile;
             Question = await dataService.GetQuestionByUserAndGameId(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID);
             LoadingActive = false;
         }

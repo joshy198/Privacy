@@ -130,7 +130,7 @@ namespace Privacy.ViewModel
             LoadingActive = true;
             ShowMenu = false;
             NumberOfPlayers = (await dataService.CountPlayersByGameId(Common.Mode.IsClient == Mode ? jvm.SystemGameID : cvm.SystemGameID));
-            UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            UserProfile = mvm.SystemUserProfile;
             LoadingActive = false;
     }
     }

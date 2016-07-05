@@ -13,10 +13,12 @@ namespace Privacy.ViewModel
     public class MainViewModel:ViewModelBase
     {
         #region variables
+       
         #region public variables
         public List<Language> Languages { get; set; }
         public int SelectedLanguage { set; get; }
         public ID SystemUserId;
+        public Profile SystemUserProfile { get; set; }
         public bool UserControlsEnabled { get; set; }
         public bool StartScreenVisible { get { return !UserControlsEnabled; } }
         public bool NameInfoAvailable { get { return UserName == null || UserName == String.Empty; } }
@@ -29,6 +31,7 @@ namespace Privacy.ViewModel
         private readonly IDataService dataService;
         private readonly IStorageService storageService;
         #endregion
+       
         #endregion
 
         /// <summary>
@@ -44,7 +47,6 @@ namespace Privacy.ViewModel
             this.dataService = dataService;
             this.storageService = storageService;
             SystemUserId = this.storageService.Read<ID>(nameof(SystemUserId), new ID { Id=0});
-
         }
 
         /// <summary>
@@ -60,9 +62,10 @@ namespace Privacy.ViewModel
                 UserName = UserName.Replace(System.Environment.NewLine, " ").Remove(20);
             if (SelectedLanguage < 0)
                 SelectedLanguage = 0;
-                SystemUserId = await dataService.CreateUser(Languages.ElementAt(SelectedLanguage).Id, UserName);
-                storageService.Write(nameof(SystemUserId), SystemUserId);
-                navigationService.NavigateTo(Common.Navigation.CentralMenu);
+            SystemUserId = await dataService.CreateUser(Languages.ElementAt(SelectedLanguage).Id, UserName);
+            storageService.Write(nameof(SystemUserId), SystemUserId);
+            ReloadUserProfile();
+            navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
 
         /// <summary>
@@ -76,11 +79,26 @@ namespace Privacy.ViewModel
                 if (await dataService.IsUserExisting(SystemUserId.Id))
                 {
                     navigationService.NavigateTo(Common.Navigation.CentralMenu);
+                    ReloadUserProfile();
                     return;
                 }
             Languages = (await dataService.GetLanguages()).ToList();
             UserControlsEnabled = true;
 
+        }
+
+        /// <summary>
+        /// When called reloads the users profile, if a profile with the user's id is not existent, he will be directed to the main page
+        /// </summary>
+        public async void ReloadUserProfile()
+        {
+            if (await dataService.IsUserExisting(SystemUserId.Id))
+            {
+                SystemUserProfile = await dataService.GetUserprofile(SystemUserId.Id);
+                RaisePropertyChanged(nameof(SystemUserProfile));
+            }
+            else
+                navigationService.NavigateTo(Common.Navigation.Main);
         }
 
         /// <summary>

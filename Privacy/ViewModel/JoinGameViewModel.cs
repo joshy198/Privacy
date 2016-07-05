@@ -107,12 +107,12 @@ namespace Privacy.ViewModel
         /// Loads the Data needed for the Page
         /// Allways called when Navigated to the Page
         /// </summary>
-        public async void LoadData()
+        public void LoadData()
         {
             LoadingActive = true;
             ShowMenu = false;
             NotificationContent = String.Empty;
-            UserProfile = (await dataService.GetUserprofile(mvm.SystemUserId.Id));
+            UserProfile = mvm.SystemUserProfile;
             LoadingActive = false;
         }
     }
