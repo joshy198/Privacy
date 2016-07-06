@@ -94,8 +94,18 @@ namespace Privacy.ViewModel
         {
             if (await dataService.IsUserExisting(SystemUserId.Id))
             {
-                SystemUserProfile = await dataService.GetUserprofile(SystemUserId.Id);
-                RaisePropertyChanged(nameof(SystemUserProfile));
+                
+                var prof = await dataService.GetUserprofile(SystemUserId.Id);
+                if (SystemUserProfile == null)
+                    SystemUserProfile = prof;
+                else
+                {
+                    SystemUserProfile.ID = prof.ID;
+                    SystemUserProfile.Lang.Id = prof.Lang.Id;
+                    SystemUserProfile.Lang.Title = prof.Lang.Title;
+                    SystemUserProfile.Name = prof.Name;
+                    SystemUserProfile.Points = prof.Points;
+                }
             }
             else
                 navigationService.NavigateTo(Common.Navigation.Main);

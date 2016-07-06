@@ -66,6 +66,7 @@ namespace Privacy.ViewModel
         {
             LoadingActive = true;
             SelectedLanguage = -1;
+            if(Languages==null||Languages.Count==0)
             Languages = (await dataService.GetLanguages()).ToList();
             profile = mvm.SystemUserProfile;
             SelectedLanguage = Languages.IndexOf(Languages.Where(x => x.Id == profile.Lang.Id).FirstOrDefault());

@@ -53,7 +53,7 @@ namespace Privacy.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// sets the next question on the server
         /// </summary>
         /// <returns></returns>
         public async Task<bool> GoToNextQuestion()
@@ -65,6 +65,9 @@ namespace Privacy.ViewModel
             return false;
         }
 
+        /// <summary>
+        /// Hides/shows the hamburger menu
+        /// </summary>
         public void HambugerInteraction()
         {
             ShowMenu = !ShowMenu;
@@ -78,11 +81,19 @@ namespace Privacy.ViewModel
         /// </summary>
         public async void NavigateToLobby()
         {
-            LoadingActive = true;
-            QuestionIDs=(await dataService.GetQuestionIdsByGroupId(Groups.ElementAt(SelectedGroup).ID)).ToList();
-            SystemGameID =(await dataService.NewGame(mvm.SystemUserId.Id, QuestionIDs.First().Id)).Id;
-            navigationService.NavigateTo(Common.Navigation.Lobby,Common.Mode.HostStart);
-            LoadingActive = false;
+            try
+            {
+                LoadingActive = true;
+                QuestionIDs = (await dataService.GetQuestionIdsByGroupId(Groups.ElementAt(SelectedGroup).ID)).ToList();
+                SystemGameID = (await dataService.NewGame(mvm.SystemUserId.Id, QuestionIDs.First().Id)).Id;
+                navigationService.NavigateTo(Common.Navigation.Lobby, Common.Mode.HostStart);
+                LoadingActive = false;
+            }
+            catch (Exception ex)
+            {
+                LoadingActive = false;
+                navigationService.NavigateTo(Common.Navigation.CentralMenu);
+            }
         }
         
         /// <summary>
@@ -111,6 +122,7 @@ namespace Privacy.ViewModel
             ShowMenu = false;
             SelectedGroup = -1;
             pos = 0;
+            if(Groups==null)
             Groups = (await dataService.GetQuestionGroupsByUserId(mvm.SystemUserId.Id)).ToList();
             UserProfile = mvm.SystemUserProfile;
             SelectedGroup = 0;

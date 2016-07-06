@@ -131,7 +131,14 @@ namespace Privacy.ViewModel
             ShowMenu = false;
             mvm.ReloadUserProfile();
             UserProfile = mvm.SystemUserProfile;
-            Question = await dataService.GetQuestionByUserAndGameId(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID);
+            var qtn = await dataService.GetQuestionByUserAndGameId(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID);
+            if (Question == null)
+                Question = qtn;
+            else
+            {
+                Question.ID = qtn.ID;
+                Question.Title = qtn.Title;
+            }
             LoadingActive = false;
         }
         #endregion

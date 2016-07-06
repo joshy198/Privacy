@@ -16,6 +16,9 @@ namespace Privacy.ViewModel
     {
         #region variables
         #region public variables
+        /// <summary>
+        /// Boolean, auf das von der UI Zugegriffen wird, ist true, wenn Daten Vor bzw. nach der Navigation geladen werden
+        /// </summary>
         public bool LoadingActive { get; set; }
         public bool isActive;
         public bool ShowMenu { get; set; }

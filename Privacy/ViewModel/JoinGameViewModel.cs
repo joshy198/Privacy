@@ -85,7 +85,6 @@ namespace Privacy.ViewModel
             if (ulong.TryParse(GameId, out SystemGameID))
             {
                 NotificationContent = String.Empty;
-
                 if ((await dataService.JoinGame(mvm.SystemUserId.Id, SystemGameID)).Id == SystemGameID)
                     navigationService.NavigateTo(Common.Navigation.Lobby, Common.Mode.IsClient);
                 else
