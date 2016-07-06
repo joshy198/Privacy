@@ -7,6 +7,9 @@
     xmlns:viewmodel="using:Privacy.ViewModel"
     xmlns:converters="using:Privacy.Converters">
     <Application.Resources>
+        <Style x:Key="StretchedItemStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
         <converters:ButtonVisibilityConverter x:Key="VisibilityConverter"/>
         <viewmodel:ViewModelLocator x:Key="Locator" />
         <SolidColorBrush x:Key="PrivacyPageBackgroundBrush" Color="#c3b298"/>

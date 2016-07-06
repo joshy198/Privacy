@@ -6,9 +6,65 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:models="using:Privacy.Model"
     DataContext="{Binding Source={StaticResource Locator},
     Path=LobbyViewModel}">
 
+    <Page.Resources>
+        <DataTemplate x:Key="StatisticTemplate" x:DataType="models:Statistic">
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.RowSpan="2"
+                           Style="{StaticResource TextBlockStyle}"
+                           TextAlignment="Left"
+                           HorizontalAlignment="Stretch"
+                           Text="{x:Bind Name}"/>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Left"
+                           Text="Points"/>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           HorizontalAlignment="Left"
+                           Text="{x:Bind Points}"/>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Left"
+                           Text="Difference"/>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="2"
+                           HorizontalAlignment="Left"
+                           Text="{x:Bind Difference}"/>
+                
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PlayersTemplate" x:DataType="models:Player">
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Style="{StaticResource TextBlockStyle}"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           Text="{x:Bind Title}"/>
+
+
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
@@ -28,17 +84,29 @@
                 <TextBlock Text="Lobby"
                        Style="{StaticResource TextBlockHeaderStyle}"/>
             </Grid>
-            <TextBlock Margin="20,0,0,0" Grid.Row="2" Grid.ColumnSpan="2" Text="{x:Bind VM.PlayersListHeader, Mode=OneWay}" FontWeight="Bold" FontSize="25"/>
-            <ScrollViewer  Margin="20,0,0,0" Grid.Row="3"
+            <TextBlock Grid.Row="2"
                        Grid.ColumnSpan="2"
-                          VerticalScrollBarVisibility="Hidden" >
-                <TextBlock 
-                       FontSize="25"
-                       Text="{x:Bind VM.PlayersList, Mode=OneWay}"
-                       Foreground="{StaticResource PrivacyFontColorBrush}"/>
-            </ScrollViewer>
+                       Style="{StaticResource TextBlockStyle}"
+                       FontWeight="Bold"
+                       Text="{x:Bind VM.PlayersListHeader, Mode=OneWay}"/>
+            <ListView Grid.Row="3"
+                      Visibility="{x:Bind VM.StatisticVisible, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"
+                      Grid.ColumnSpan="2"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                      IsItemClickEnabled="False"
+                      ItemContainerStyle="{StaticResource StretchedItemStyle}"
+                      ItemTemplate="{StaticResource StatisticTemplate}"
+                      ItemsSource="{x:Bind VM.Statistics, Mode=OneWay}"/>
+            <ListView Grid.Row="3"
+                      Visibility="{x:Bind VM.PlayersVisible, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"
+                      Grid.ColumnSpan="2"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                      IsItemClickEnabled="False"
+                      ItemContainerStyle="{StaticResource StretchedItemStyle}"
+                      ItemTemplate="{StaticResource PlayersTemplate}"
+                      ItemsSource="{x:Bind VM.Players, Mode=OneWay}"/>
             <Button  Grid.Row="4"
-                     Grid.Column="1" 
+                     Grid.Column="1"
                      Content="{x:Bind VM.ButtonText, Mode=OneWay}"
                      HorizontalContentAlignment="Left"
                      VerticalAlignment="Top"
@@ -84,7 +152,11 @@
                     <RowDefinition Height="160"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Bind VM.DisplayGameID, Mode=OneWay}" TextAlignment="Right" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,25,0"/>
+                <TextBlock Grid.Row="0"
+                           Text="{x:Bind VM.DisplayGameID, Mode=OneWay}"
+                           TextAlignment="Right" Style="{StaticResource BurgerContent}"
+                           FontSize="25"
+                           Padding="0,10,25,0"/>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35"/>
@@ -163,10 +235,6 @@
                             Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
-        </Grid>
-        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
-            <Image Source= "ms-appx:///Assets/start.png"
-                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

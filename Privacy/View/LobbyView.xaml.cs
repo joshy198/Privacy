@@ -34,8 +34,8 @@ namespace Privacy.View
             ((App)Application.Current).OnBackRequested += OnOnBackRequested;
             base.OnNavigatedTo(e);
             VM.Mode = e.Parameter as string;
-            VM.LoadData();
             VM.isActive = true;
+            VM.LoadData();
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
