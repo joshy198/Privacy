@@ -299,13 +299,19 @@ namespace Privacy.Services
 
                 var response = await client.PostAsync(url + "get_question_by_user_and_game_id.php", formContent);
                 question= JsonConvert.DeserializeObject<Question>(await response.Content.ReadAsStringAsync());
+                retry = 0;
                 return question;
             }
             catch (Exception ex)
             {
-                if (question == null)
-                    question = new Question();
-                return question;
+                if (retry < 30)
+                {
+                    retry++;
+                    await Task.Delay(1000);
+                    return await GetQuestionByUserAndGameId(UserId, GameId);
+                }
+                else
+                    return new Question() ;
             }
         }
 

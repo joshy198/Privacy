@@ -121,8 +121,17 @@ namespace Privacy.ViewModel
                     NextAvailable = await dataService.AllowContinue(mvm.SystemUserId.Id, cvm.SystemGameID);
             }
             else
-            NavigateToCentralMenu();
+            {
+                ClearQuit();
+                NavigateToCentralMenu();
+            }
             LoadingActive = false;
+        }
+        public void ClearQuit()
+        {
+            Players.Clear();
+            Statistics.Clear();
+            dataService.QuitGame(mvm.SystemUserId.Id);
         }
         
         /// <summary>
@@ -143,11 +152,12 @@ namespace Privacy.ViewModel
                 {
                     PlayersListHeader = "Game ID " + cvm.SystemGameID;
                     var data = await dataService.GetPlayersInGame(cvm.SystemGameID);
-                    foreach (var v in Players)
-                    {
-                        if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
-                            Players.Remove(v);
-                    }
+                    if (Players.Count != 0)
+                        foreach (var v in Players)
+                        {
+                            if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
+                                Players.Remove(v);
+                        }
                     foreach (var v in data)
                     {
                         if (Players.Where(x => x.ID == v.ID).Count() == 0)
@@ -158,80 +168,85 @@ namespace Privacy.ViewModel
                 {
                     PlayersListHeader = "Players";
 
-                        var data = await dataService.GetPlayersInGame(jvm.SystemGameID);
+                    var data = await dataService.GetPlayersInGame(jvm.SystemGameID);
+                    if (Players.Count != 0)
                         foreach (var v in Players)
                         {
                             if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
                                 Players.Remove(v);
                         }
-                        foreach (var v in data)
-                        {
-                            if (Players.Where(x => x.ID == v.ID).Count() == 0)
-                                Players.Add(v);
-                        }
-                        NextAvailable = true;
+                    foreach (var v in data)
+                    {
+                        if (Players.Where(x => x.ID == v.ID).Count() == 0)
+                            Players.Add(v);
+                    }
+                    NextAvailable = true;
                 }
                 else if (Common.Mode.ClientWait == Mode)
                 {
                     PlayersListHeader = "Answered Players";
-                        NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
-                        var data = await dataService.GetAnsweredUsers(jvm.SystemGameID);
+                    NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
+                    var data = await dataService.GetAnsweredUsers(jvm.SystemGameID);
+                    if (Players.Count != 0)
                         foreach (var v in Players)
                         {
                             if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
                                 Players.Remove(v);
                         }
-                        foreach (var v in data)
-                        {
-                            if (Players.Where(x => x.ID == v.ID).Count() == 0)
-                                Players.Add(v);
-                        }
+                    foreach (var v in data)
+                    {
+                        if (Players.Where(x => x.ID == v.ID).Count() == 0)
+                            Players.Add(v);
+                    }
                 }
                 else if (Common.Mode.HostWait == Mode)
                 {
                     PlayersListHeader = "Answered Players";
-                        var data = await dataService.GetAnsweredUsers(cvm.SystemGameID);
+                    var data = await dataService.GetAnsweredUsers(cvm.SystemGameID);
+                    if (Players.Count != 0)
                         foreach (var v in Players)
                         {
                             if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
                                 Players.Remove(v);
                         }
-                        foreach (var v in data)
-                        {
-                            if (Players.Where(x => x.ID == v.ID).Count() == 0)
-                                Players.Add(v);
-                        }
+                    foreach (var v in data)
+                    {
+                        if (Players.Where(x => x.ID == v.ID).Count() == 0)
+                            Players.Add(v);
+                    }
                 }
                 else if (Common.Mode.ClientStatistic == Mode)
                 {
-                        NextAvailable = !await dataService.IsContinueAllowed(jvm.SystemGameID);
-                        var data = await dataService.GetStatisticByGameId(jvm.SystemGameID);
+                    NextAvailable = !await dataService.IsContinueAllowed(jvm.SystemGameID);
+                    var data = await dataService.GetStatisticByGameId(jvm.SystemGameID);
+                    if (Statistics.Count != 0)
                         foreach (var v in Statistics)
                         {
                             if (data.Where(x => x.ID == v.ID && x.Name == v.Name).Count() == 0)
                                 Statistics.Remove(v);
                         }
-                        foreach (var v in data)
-                        {
-                            if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
-                                Statistics.Add(v);
-                        }
-                        PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
+                    foreach (var v in data)
+                    {
+                        if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
+                            Statistics.Add(v);
+                    }
+                    PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
                 }
                 else if (Common.Mode.HostStatistic == Mode)
                 {
-                        var data = await dataService.GetStatisticByGameId(cvm.SystemGameID);
+                    var data = await dataService.GetStatisticByGameId(cvm.SystemGameID);
+                    if (Statistics.Count != 0)
                         foreach (var v in Statistics)
                         {
                             if (data.Where(x => x.ID == v.ID && x.Name == v.Name).Count() == 0)
                                 Statistics.Remove(v);
                         }
-                        foreach (var v in data)
-                        {
-                            if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
-                                Statistics.Add(v);
-                        }
-                        PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
+                    foreach (var v in data)
+                    {
+                        if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
+                            Statistics.Add(v);
+                    }
+                    PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
                 }
             }
             catch (Exception ex)
@@ -280,7 +295,7 @@ namespace Privacy.ViewModel
         /// </summary>
         public void NavigateToCentralMenu()
         {
-            dataService.QuitGame(mvm.SystemUserId.Id);
+            ClearQuit();
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
 
@@ -347,7 +362,7 @@ namespace Privacy.ViewModel
         /// </summary>
         public void GoBackRequest()
         {
-            dataService.QuitGame(mvm.SystemUserId.Id);
+            ClearQuit();
             if (Mode == Common.Mode.HostStart || Mode == Common.Mode.HostStatistic || Mode == Common.Mode.HostWait)
                 navigationService.NavigateTo(Common.Navigation.Category);
             else
@@ -383,6 +398,8 @@ namespace Privacy.ViewModel
             NextAvailable = false;
             UserProfile = mvm.SystemUserProfile;
             PlayersListHeader = string.Empty;
+            Players.Clear();
+            Statistics.Clear();
             LoadingActive = false;
             DataLoading();
         }

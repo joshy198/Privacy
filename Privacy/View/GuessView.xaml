@@ -33,13 +33,14 @@
             <TextBlock Grid.Row="1"
                        Grid.ColumnSpan="2"
                        Style="{StaticResource TextBlockStyle}"
+                       Margin="20,0,20,0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Bottom"
                        Text="{x:Bind VM.AnswerString, Mode=OneWay}"/>
             <Slider Grid.Row="3"
                     Grid.ColumnSpan="2" 
                     VerticalAlignment="Center"
-                    Padding="15,0,15,0"
+                    Margin="40,0,40,0"
                     Value="{Binding SelectedAmmountOfPlayers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     Minimum="0" Maximum="{x:Bind VM.NumberOfPlayers,Mode=OneWay}"/>
             <Button Grid.Row="4"

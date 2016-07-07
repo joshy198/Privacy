@@ -31,6 +31,7 @@ namespace Privacy.ViewModel
         private readonly MainViewModel mvm;
         private readonly JoinGameViewModel jvm;
         private readonly CategoryViewModel cvm;
+        private readonly LobbyViewModel lvm;
         #endregion
         #endregion
 
@@ -43,13 +44,14 @@ namespace Privacy.ViewModel
         /// <param name="mvm">Instance of the MainViewModel</param>
         /// <param name="jvm">Instance of the JoinVewModel</param>
         /// <param name="cvm">Instance of the CategoryViewModel</param>
-        public QuestionViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm, JoinGameViewModel jvm, CategoryViewModel cvm)
+        public QuestionViewModel(INavigationService navigationService, IDataService dataService, MainViewModel mvm, JoinGameViewModel jvm, CategoryViewModel cvm,LobbyViewModel lvm)
         {
             this.navigationService = navigationService;
             this.dataService = dataService;
             this.mvm = mvm;
             this.jvm = jvm;
             this.cvm = cvm;
+            this.lvm = lvm;
         }
         
         #region HambugerMenuAction
@@ -107,7 +109,7 @@ namespace Privacy.ViewModel
         /// </summary>
         public void GoBackRequest()
         {
-            dataService.QuitGame(mvm.SystemUserId.Id);
+            lvm.ClearQuit();   
             if (Mode == Common.Mode.IsClient)
                 navigationService.NavigateTo(Common.Navigation.Join);
             else
@@ -118,7 +120,7 @@ namespace Privacy.ViewModel
         /// </summary>
         public void NavigateToCentralMenu()
         {
-            dataService.QuitGame(mvm.SystemUserId.Id);
+            lvm.ClearQuit();
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
         /// <summary>
@@ -158,6 +160,18 @@ namespace Privacy.ViewModel
                 Question.ID = qtn.ID;
                 Question.Title = qtn.Title;
                 RaisePropertyChanged(nameof(Question));
+                if(Question.ID==0)
+                    if (isActive)
+                    {
+                        var dialog = new MessageDialog("Seems like there is a Problem with your Internet connection, you're now taken to the Main Menu");
+                        dialog.Title = "Notification";
+                        dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+                        var res = await dialog.ShowAsync();
+                        if ((int)res.Id == 0)
+                        {
+                            navigationService.NavigateTo(Common.Navigation.CentralMenu);
+                        }
+                    }
             }
             LoadingActive = false;
         }

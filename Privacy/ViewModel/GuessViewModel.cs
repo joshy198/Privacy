@@ -35,6 +35,7 @@ namespace Privacy.ViewModel
         private readonly JoinGameViewModel jvm;
         private readonly MainViewModel mvm;
         private readonly QuestionViewModel qvm;
+        private readonly LobbyViewModel lvm;
         #endregion
 
         #endregion
@@ -49,7 +50,7 @@ namespace Privacy.ViewModel
         /// <param name="jvm">Instance of the JoinViewModel</param>
         /// <param name="mvm">Instance of the MainViewModel</param>
         /// <param name="qvm">Instance of the QuestionViewModel</param>
-        public GuessViewModel(INavigationService navigationService, IDataService dataService, CategoryViewModel cvm, JoinGameViewModel jvm, MainViewModel mvm, QuestionViewModel qvm)
+        public GuessViewModel(INavigationService navigationService, IDataService dataService, CategoryViewModel cvm, JoinGameViewModel jvm, MainViewModel mvm, QuestionViewModel qvm, LobbyViewModel lvm)
         {
             this.navigationService = navigationService;
             this.dataService = dataService;
@@ -57,6 +58,7 @@ namespace Privacy.ViewModel
             this.cvm = cvm;
             this.mvm = mvm;
             this.qvm = qvm;
+            this.lvm = lvm;
         }
 
         /// <summary>
@@ -105,7 +107,7 @@ namespace Privacy.ViewModel
         /// </summary>
         public void NavigateToCentralMenu()
         {
-            dataService.QuitGame(mvm.SystemUserId.Id);
+            lvm.ClearQuit();
             navigationService.NavigateTo(Common.Navigation.CentralMenu);
         }
 
@@ -114,7 +116,7 @@ namespace Privacy.ViewModel
         /// </summary>
         public void GoBackRequest()
         {
-            dataService.QuitGame(mvm.SystemUserId.Id);
+            lvm.ClearQuit();
             if (Mode == Common.Mode.IsClient)
                 navigationService.NavigateTo(Common.Navigation.Join);
             else
