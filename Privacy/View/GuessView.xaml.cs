@@ -35,13 +35,14 @@ namespace Privacy.View
             ((App)Application.Current).OnBackRequested += OnOnBackRequested;
             base.OnNavigatedTo(e);
             VM.LoadData();
+            VM.isActive = true;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             ((App)Application.Current).OnBackRequested -= OnOnBackRequested;
-
             base.OnNavigatingFrom(e);
+            VM.isActive = false;
         }
         private async void OnOnBackRequested(object sender, BackRequestedEventArgs e)
         {

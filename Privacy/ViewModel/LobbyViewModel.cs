@@ -137,9 +137,9 @@ namespace Privacy.ViewModel
         /// </summary>
         public async void ReloadPlayers()
         {
-            if (Common.Mode.HostStart == Mode)
+            try
             {
-                if (await dataService.IsGameExisting(cvm.SystemGameID))
+                if (Common.Mode.HostStart == Mode)
                 {
                     PlayersListHeader = "Game ID " + cvm.SystemGameID;
                     var data = await dataService.GetPlayersInGame(cvm.SystemGameID);
@@ -154,111 +154,122 @@ namespace Privacy.ViewModel
                             Players.Add(v);
                     }
                 }
-                else
-                    NavigateToCentralMenu();
-            }
-            else if (Common.Mode.IsClient == Mode)
-            {
-                PlayersListHeader = "Players";
-                if (await dataService.IsGameExisting(jvm.SystemGameID))
+                else if (Common.Mode.IsClient == Mode)
                 {
-                    var data = await dataService.GetPlayersInGame(jvm.SystemGameID);
-                    foreach (var v in Players)
+                    PlayersListHeader = "Players";
+
+                        var data = await dataService.GetPlayersInGame(jvm.SystemGameID);
+                        foreach (var v in Players)
+                        {
+                            if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
+                                Players.Remove(v);
+                        }
+                        foreach (var v in data)
+                        {
+                            if (Players.Where(x => x.ID == v.ID).Count() == 0)
+                                Players.Add(v);
+                        }
+                        NextAvailable = true;
+                }
+                else if (Common.Mode.ClientWait == Mode)
+                {
+                    PlayersListHeader = "Answered Players";
+                        NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
+                        var data = await dataService.GetAnsweredUsers(jvm.SystemGameID);
+                        foreach (var v in Players)
+                        {
+                            if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
+                                Players.Remove(v);
+                        }
+                        foreach (var v in data)
+                        {
+                            if (Players.Where(x => x.ID == v.ID).Count() == 0)
+                                Players.Add(v);
+                        }
+                }
+                else if (Common.Mode.HostWait == Mode)
+                {
+                    PlayersListHeader = "Answered Players";
+                        var data = await dataService.GetAnsweredUsers(cvm.SystemGameID);
+                        foreach (var v in Players)
+                        {
+                            if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
+                                Players.Remove(v);
+                        }
+                        foreach (var v in data)
+                        {
+                            if (Players.Where(x => x.ID == v.ID).Count() == 0)
+                                Players.Add(v);
+                        }
+                }
+                else if (Common.Mode.ClientStatistic == Mode)
+                {
+                        NextAvailable = !await dataService.IsContinueAllowed(jvm.SystemGameID);
+                        var data = await dataService.GetStatisticByGameId(jvm.SystemGameID);
+                        foreach (var v in Statistics)
+                        {
+                            if (data.Where(x => x.ID == v.ID && x.Name == v.Name).Count() == 0)
+                                Statistics.Remove(v);
+                        }
+                        foreach (var v in data)
+                        {
+                            if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
+                                Statistics.Add(v);
+                        }
+                        PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
+                }
+                else if (Common.Mode.HostStatistic == Mode)
+                {
+                        var data = await dataService.GetStatisticByGameId(cvm.SystemGameID);
+                        foreach (var v in Statistics)
+                        {
+                            if (data.Where(x => x.ID == v.ID && x.Name == v.Name).Count() == 0)
+                                Statistics.Remove(v);
+                        }
+                        foreach (var v in data)
+                        {
+                            if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
+                                Statistics.Add(v);
+                        }
+                        PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Mode == Common.Mode.ClientStatistic || Mode == Common.Mode.ClientWait || Mode == Common.Mode.IsClient)
+                {
+                    if (!await dataService.IsGameExisting(jvm.SystemGameID))
                     {
-                        if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
-                            Players.Remove(v);
+                        if (isActive)
+                        {
+                            var dialog = new MessageDialog("Seems like the game has ended, you will be taken to the Main Menu");
+                            dialog.Title = "Notification";
+                            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+                            var res = await dialog.ShowAsync();
+                            if ((int)res.Id == 0)
+                            {
+                                navigationService.NavigateTo(Common.Navigation.CentralMenu);
+                            }
+                        }
                     }
-                    foreach (var v in data)
-                    {
-                        if (Players.Where(x => x.ID == v.ID).Count() == 0)
-                            Players.Add(v);
-                    }
-                    NextAvailable = true;
                 }
                 else
-                    NavigateToCentralMenu();
-            }
-            else if (Common.Mode.ClientWait == Mode)
-            {
-                PlayersListHeader = "Answered Players";
-                if (await dataService.IsGameExisting(jvm.SystemGameID))
                 {
-                    NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
-                    var data = await dataService.GetAnsweredUsers(jvm.SystemGameID);
-                    foreach (var v in Players)
+                    if (!await dataService.IsGameExisting(cvm.SystemGameID))
                     {
-                        if (data.Where(x => x.ID == v.ID && x.Title == v.Title).Count() == 0)
-                            Players.Remove(v);
-                    }
-                    foreach (var v in data)
-                    {
-                        if (Players.Where(x => x.ID == v.ID).Count() == 0)
-                            Players.Add(v);
+                        if (isActive)
+                        {
+                            var dialog = new MessageDialog("Seems like the game has ended, you will be taken to the Main Menu");
+                            dialog.Title = "Notification";
+                            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+                            var res = await dialog.ShowAsync();
+                            if ((int)res.Id == 0)
+                            {
+                                navigationService.NavigateTo(Common.Navigation.CentralMenu);
+                            }
+                        }
                     }
                 }
-                else
-                    NavigateToCentralMenu();
-            }
-            else if (Common.Mode.HostWait == Mode)
-            {
-                PlayersListHeader = "Answered Players";
-                if (await dataService.IsGameExisting(cvm.SystemGameID))
-                {
-                    var data = await dataService.GetAnsweredUsers(cvm.SystemGameID);
-                    foreach (var v in Players)
-                    {
-                        if (data.Where(x => x.ID == v.ID&&x.Title==v.Title).Count() == 0)
-                            Players.Remove(v);
-                    }
-                    foreach (var v in data)
-                    {
-                        if (Players.Where(x => x.ID == v.ID).Count() == 0)
-                            Players.Add(v);
-                    }
-                }
-                else
-                    NavigateToCentralMenu();
-            }
-            else if (Common.Mode.ClientStatistic == Mode)
-            {
-                if (await dataService.IsGameExisting(jvm.SystemGameID))
-                {
-                    NextAvailable = !await dataService.IsContinueAllowed(jvm.SystemGameID);
-                    var data = await dataService.GetStatisticByGameId(jvm.SystemGameID);
-                    foreach (var v in Statistics)
-                    {
-                        if (data.Where(x => x.ID == v.ID&&x.Name==v.Name).Count() == 0)
-                            Statistics.Remove(v);
-                    }
-                    foreach (var v in data)
-                    {
-                        if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
-                            Statistics.Add(v);
-                    }
-                    PlayersListHeader = "Number of Yes-Votes: "+Statistics.FirstOrDefault().Yesses;
-                }
-                else
-                    NavigateToCentralMenu();
-            }
-            else if (Common.Mode.HostStatistic == Mode)
-            {
-                if (await dataService.IsGameExisting(cvm.SystemGameID))
-                {
-                    var data= await dataService.GetStatisticByGameId(cvm.SystemGameID);
-                    foreach (var v in Statistics)
-                    {
-                        if (data.Where(x => x.ID == v.ID && x.Name == v.Name).Count() == 0)
-                            Statistics.Remove(v);
-                    }
-                    foreach (var v in data)
-                    {
-                        if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
-                            Statistics.Add(v);
-                    }
-                    PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
-                }
-                else
-                    NavigateToCentralMenu();
             }
         }
 
@@ -349,6 +360,7 @@ namespace Privacy.ViewModel
         /// stops as soon as the User leaves this page
         /// </summary>
         /// <returns>returns nothing</returns>
+
         private async Task DataLoading()
         {
             while (isActive)

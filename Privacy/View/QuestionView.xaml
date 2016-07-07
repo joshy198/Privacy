@@ -116,7 +116,7 @@
                         Style="{StaticResource HamburgerContentButtonStyle}"
                             FontSize="20"
                         Content="Quit"
-                        Click="{x:Bind VM.NavigateToSettings}"/>
+                        Click="{x:Bind VM.GoBackRequest}"/>
                 </Grid>
                 <TextBlock Grid.Row="2" Text="Profile" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,0,0"/>
                 <Grid Grid.Row="3"  Height="160">
@@ -160,6 +160,9 @@
                 </Grid>
             </Grid>
         </Grid>
-
+        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
+            <Image Source= "ms-appx:///Assets/start.png"
+                   Stretch="Fill"/>
+        </Grid>
     </Grid>
 </Page>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 
 namespace Privacy.ViewModel
 {
@@ -22,6 +23,7 @@ namespace Privacy.ViewModel
         public string DisplayGameID { get { return Mode == Common.Mode.IsClient ? "#"+jvm.SystemGameID : "#" + cvm.SystemGameID; } }
         public Question Question { get; set; }
         public bool Answer { get; set; }
+        public bool isActive { get; set; }
         #endregion
         #region private readonly variables
         private readonly INavigationService navigationService;
@@ -81,6 +83,23 @@ namespace Privacy.ViewModel
             Answer = false;
             if (await dataService.AnswerQuestion(mvm.SystemUserId.Id, Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID, Question.ID, true, null))
                 NavigateToLobbyView();
+            else
+            {
+                if (await dataService.IsGameExisting(Mode == Common.Mode.IsClient ? jvm.SystemGameID : cvm.SystemGameID))
+                {
+                    if (isActive)
+                    {
+                        var dialog = new MessageDialog("Seems like the game has ended, you will be taken to the Main Menu");
+                        dialog.Title = "Notification";
+                        dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+                        var res = await dialog.ShowAsync();
+                        if ((int)res.Id == 0)
+                        {
+                            navigationService.NavigateTo(Common.Navigation.CentralMenu);
+                        }
+                    }
+                }
+            }
             LoadingActive = false;
         }
         /// <summary>
@@ -138,6 +157,7 @@ namespace Privacy.ViewModel
             {
                 Question.ID = qtn.ID;
                 Question.Title = qtn.Title;
+                RaisePropertyChanged(nameof(Question));
             }
             LoadingActive = false;
         }

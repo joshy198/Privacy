@@ -25,6 +25,7 @@ namespace Privacy.ViewModel
         public int NumberOfPlayers { get; set; }
         public Profile UserProfile { get; set; }
         public int SelectedAmmountOfPlayers { get; set; }
+        public bool isActive { get; set; }
         #endregion
 
         #region private readonly variables
