@@ -8,10 +8,14 @@
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator},
     Path=CentralMenuViewModel}">
+    <Page.Resources>
+
+    </Page.Resources>
     <Grid Background="{ThemeResource PrivacyPageBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="1.3*"/>
@@ -23,18 +27,27 @@
             <Grid Grid.Row="0"
                   Grid.ColumnSpan="2"
                   Background="{StaticResource PrivacySystemColorBrush}">
-            <TextBlock Text="Menu"
+                <TextBlock Text="{x:Bind VM.LanguagePackage.MenuTranslation, Mode=OneWay}"
                        Style="{StaticResource TextBlockHeaderStyle}"/>
             </Grid>
-            <Button Grid.Row="1"
+            <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="{x:Bind VM.LanguagePackage.MainInfo, Mode=OneWay}"
+                       TextWrapping="Wrap" 
+                       Padding="25,15,25,0" 
+                       Foreground="{StaticResource PrivacyFontColorBrush}"
+                       Opacity="0.8"
+                       FontSize="18"
+                       Visibility="{x:Bind VM.AdvancedInformation, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
+            <Button Grid.Row="2"
                     Grid.Column="1"
                     Style="{StaticResource ButtonStyle}"
-                    Content="Create" HorizontalContentAlignment="Left"
+                    Content="{x:Bind VM.LanguagePackage.CreateGameTranslation, Mode=OneWay}" HorizontalContentAlignment="Left"
                     VerticalAlignment="Bottom"
                     Click="{x:Bind VM.NavigateToCategoryView}"/>
-            <Button Grid.Row="3"
+            <Button Grid.Row="4"
                     Grid.Column="0" Style="{StaticResource ButtonStyle}"
-                    Content="Join" HorizontalContentAlignment="Right"
+                    Content="{x:Bind VM.LanguagePackage.JoinTranslation, Mode=OneWay}" HorizontalContentAlignment="Right"
                     VerticalAlignment="Top"
                     Click="{x:Bind VM.NavigateToJoinView}"/>
         </Grid>
@@ -55,17 +68,20 @@
             <Button Grid.Row="0"
                     Style="{StaticResource HamburgerButtonStyle}"
                     Click="{x:Bind VM.HambugerInteraction}"/>
-            <Grid Grid.Row="1"
+            <Grid x:Name="BurgerMenuGrid" Grid.Row="1"
                   Width="{x:Bind VM.MenuSize, Mode=OneWay}"
                   HorizontalAlignment="Left"
                   Background="{StaticResource PrivacySystemColorBrush}"
                   Padding="10,0,0,60">
+                <Grid.Projection>
+                    <PlaneProjection/>
+                </Grid.Projection>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="160"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Profile" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,0,0"/>
+                <TextBlock Grid.Row="0" Text="{x:Bind VM.LanguagePackage.ProfileTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,0,0"/>
                 <Grid Grid.Row="1" Height="160">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -75,11 +91,11 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Name" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="0" Text="{x:Bind VM.LanguagePackage.NameTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="20"/>
                     <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.Name, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
-                    <TextBlock Grid.Row="2" Text="Points" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="2" Text="{x:Bind VM.LanguagePackage.PointsTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="20"/>
                     <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.Points, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
-                    <TextBlock Grid.Row="4" Text="Language" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="4" Text="{x:Bind VM.LanguagePackage.LanguageTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="20"/>
                     <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.Lang.Title, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                 </Grid>
                 <Grid Grid.Row="2">
@@ -104,7 +120,7 @@
                             Grid.Column="1"
                         Style="{StaticResource HamburgerContentButtonStyle}"
                             FontSize="20"
-                        Content="Settings"
+                        Content="{x:Bind VM.LanguagePackage.SettingsTranslation, Mode=OneWay}"
                             Click="{x:Bind VM.NavigateToSettings}"/>
                     <TextBlock Grid.Row="3"
                                Style="{StaticResource BurgerContent}"
@@ -117,7 +133,7 @@
                             Grid.Column="1"
                         Style="{StaticResource HamburgerContentButtonStyle}"
                             FontSize="20"
-                        Content="Credits"
+                        Content="{x:Bind VM.LanguagePackage.CreditTranslation, Mode=OneWay}"
                             VerticalAlignment="Center"
                             Click="{x:Bind VM.NavigateToAbout}"/>
                 </Grid>

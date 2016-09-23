@@ -13,7 +13,8 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
-                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="1.2*"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition/>
@@ -25,26 +26,35 @@
             <Grid Grid.Row="0"
                   Grid.ColumnSpan="2"
                   Background="{StaticResource PrivacySystemColorBrush}">
-                <TextBlock Text="Question"
+                <TextBlock Text="{x:Bind VM.LanguagePackage.QuestionTranslation, Mode=OneWay}"
                        Style="{StaticResource TextBlockHeaderStyle}"/>
             </Grid>
             <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="{x:Bind VM.LanguagePackage.QuestionInfo, Mode=OneWay}"
+                       TextWrapping="Wrap" 
+                       Padding="25,15,25,0" 
+                       Foreground="{StaticResource PrivacyFontColorBrush}"
+                       Opacity="0.8"
+                       FontSize="18"
+                       Visibility="{x:Bind VM.AdvancedInformation, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
+            <TextBlock Grid.Row="2"
                        TextWrapping="Wrap"
                        Text="{x:Bind VM.Question.Title, Mode=OneWay}"
                        FontSize="20" Grid.ColumnSpan="2" TextAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="15,0,15,0"/>
-            <Button Grid.Row="2"
+            <Button Grid.Row="3"
                     Grid.Column="1" 
                     Style="{StaticResource ButtonStyle}"
-                    Content="Yes"
+                    Content="{x:Bind VM.LanguagePackage.YesTranslation, Mode=OneWay}"
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
                     Click="{x:Bind VM.NavigateToYes}"/>
-            <Button Grid.Row="4"
+            <Button Grid.Row="5"
                     Grid.Column="0"
                     Style="{StaticResource ButtonStyle}"
-                    Content="No"
+                    Content="{x:Bind VM.LanguagePackage.NoTranslation, Mode=OneWay}"
                     HorizontalContentAlignment="Right"
                     VerticalAlignment="Top"
                     Click="{x:Bind VM.NavigateToNo}"/>
@@ -102,7 +112,7 @@
                             Grid.Column="1"
                             FontSize="20"
                         Style="{StaticResource HamburgerContentButtonStyle}"
-                        Content="Home"
+                        Content="{x:Bind VM.LanguagePackage.HomeTranslation, Mode=OneWay}"
                             Click="{x:Bind VM.NavigateToCentralMenu}"/>
                     <TextBlock Grid.Row="2"
                                Style="{StaticResource BurgerContent}"
@@ -115,10 +125,10 @@
                             Grid.Column="1"
                         Style="{StaticResource HamburgerContentButtonStyle}"
                             FontSize="20"
-                        Content="Quit"
+                        Content="{x:Bind VM.LanguagePackage.QuitTranslation, Mode=OneWay}"
                         Click="{x:Bind VM.GoBackRequest}"/>
                 </Grid>
-                <TextBlock Grid.Row="2" Text="Profile" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,0,0"/>
+                <TextBlock Grid.Row="2" Text="{x:Bind VM.LanguagePackage.ProfileTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="25" Padding="0,10,0,0"/>
                 <Grid Grid.Row="3"  Height="160">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -128,11 +138,11 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Name" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="0" Text="{x:Bind VM.LanguagePackage.NameTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="20"/>
                     <TextBlock Grid.Row="1" Text="{x:Bind VM.UserProfile.Name, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
-                    <TextBlock Grid.Row="2" Text="Points" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="2" Text="{x:Bind VM.LanguagePackage.PointsTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="20"/>
                     <TextBlock Grid.Row="3" Text="{x:Bind VM.UserProfile.Points, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
-                    <TextBlock Grid.Row="4" Text="Language" Style="{StaticResource BurgerContent}" FontSize="20"/>
+                    <TextBlock Grid.Row="4" Text="{x:Bind VM.LanguagePackage.LanguageTranslation, Mode=OneWay}" Style="{StaticResource BurgerContent}" FontSize="20"/>
                     <TextBlock Grid.Row="5" Text="{x:Bind VM.UserProfile.Lang.Title, Mode=OneWay}" Style="{StaticResource BurgerContent}"/>
                 </Grid>
                 <Grid Grid.Row="4">
@@ -155,14 +165,11 @@
                             Grid.Column="1"
                         Style="{StaticResource HamburgerContentButtonStyle}"
                             FontSize="20"
-                        Content="Settings"
+                        Content="{x:Bind VM.LanguagePackage.SettingsTranslation, Mode=OneWay}"
                             Click="{x:Bind VM.NavigateToSettings}"/>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
-            <Image Source= "ms-appx:///Assets/start.png"
-                   Stretch="Fill"/>
-        </Grid>
+
     </Grid>
 </Page>

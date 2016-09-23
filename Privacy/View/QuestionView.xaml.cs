@@ -48,10 +48,10 @@ namespace Privacy.View
         private async void OnOnBackRequested(object sender, BackRequestedEventArgs e)
         {
             e.Handled = true;
-            var dialog = new MessageDialog("Do you want to exit the current game?");
-            dialog.Title = "Confirmation";
-            dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
-            dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
+            var dialog = new MessageDialog(VM.LanguagePackage.QuitMsg);
+            dialog.Title = VM.LanguagePackage.ConfirmationTranslation;
+            dialog.Commands.Add(new UICommand { Label = VM.LanguagePackage.YesTranslation, Id = 0 });
+            dialog.Commands.Add(new UICommand { Label = VM.LanguagePackage.NoTranslation, Id = 1 });
             var res = await dialog.ShowAsync();
             if ((int)res.Id == 0)
             {

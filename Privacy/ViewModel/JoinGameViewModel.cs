@@ -29,6 +29,8 @@ namespace Privacy.ViewModel
         public string NotificationContent { get; set; }
         public ulong SystemGameID = 0;
         public Profile UserProfile { get; set; }
+        public LangPCK LanguagePackage { get; set; }
+        public bool AdvancedInformation { get { return mvm.AdvancedInformation; } }
         #endregion
 
         #region private variables
@@ -88,7 +90,7 @@ namespace Privacy.ViewModel
                 if ((await dataService.JoinGame(mvm.SystemUserId.Id, SystemGameID)).Id == SystemGameID)
                     navigationService.NavigateTo(Common.Navigation.Lobby, Common.Mode.IsClient);
                 else
-                    NotificationContent = "Wrong Game ID";
+                    NotificationContent = LanguagePackage.WrongIdTranslation;
             }
             LoadingActive = false;
         }
@@ -109,6 +111,7 @@ namespace Privacy.ViewModel
         public void LoadData()
         {
             LoadingActive = true;
+            LanguagePackage = mvm.LanguagePackage;
             ShowMenu = false;
             NotificationContent = String.Empty;
             UserProfile = mvm.SystemUserProfile;

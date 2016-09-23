@@ -30,5 +30,7 @@ namespace Privacy.Services
         Task<bool> IsUserExisting(ulong UserId);
         Task<bool> IsGameExisting(ulong UserId);
         Task<bool> QuitGame(ulong UserId);
+        Task<LangPCK> GetLanguagePack(ulong UserId);
+        Task<PckVersion> GetLangVersion(UInt64 LangPckId,double vnr);
     }
 }

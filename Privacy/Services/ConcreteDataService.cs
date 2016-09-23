@@ -605,5 +605,48 @@ namespace Privacy.Services
                 return new ID { };
             }
         }
+
+        public async Task<LangPCK> GetLanguagePack(ulong UserId)
+        {
+            try
+            {
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                new KeyValuePair<string, string>("user_id", UserId.ToString())
+            });
+
+                var response = await client.PostAsync(url + "get_language_pack_by_user_id.php", formContent);
+                var data = JsonConvert.DeserializeObject<LangPCK>(await response.Content.ReadAsStringAsync());
+                retry = 0;
+                return data;
+            }
+            catch (Exception ex)
+            {
+                if (retry < 30)
+                {
+                    retry++;
+                    await Task.Delay(1000);
+                    return await GetLanguagePack(UserId);
+                }
+                return new LangPCK { };
+            }
+        }
+
+        public async Task<PckVersion> GetLangVersion(ulong LangPckId,double vnr)
+        {
+            try
+            {
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                new KeyValuePair<string, string>("lang_pck_id", LangPckId.ToString())
+            });
+                var response = await client.PostAsync(url + "get_lang_version.php", formContent);
+                return JsonConvert.DeserializeObject<PckVersion>(await response.Content.ReadAsStringAsync());
+            }
+            catch (Exception ex)
+            {
+                return new PckVersion { VersionNr=vnr};
+            }
+        }
     }
 }

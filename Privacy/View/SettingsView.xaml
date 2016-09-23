@@ -13,13 +13,14 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
-                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="110"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
                 <RowDefinition Height="64"/>
-                <RowDefinition Height="80"/>
                 <RowDefinition Height="64"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -29,12 +30,21 @@
             <Grid Grid.Row="0"
                   Grid.ColumnSpan="2"
                   Background="{StaticResource PrivacySystemColorBrush}">
-                <TextBlock Text="Menu"
+                <TextBlock Text="{x:Bind VM.LanguagePackage.SettingsTranslation, Mode=OneWay}"
                        Style="{StaticResource TextBlockHeaderStyle}"/>
             </Grid>
+            <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="{x:Bind VM.LanguagePackage.SettingsInfo, Mode=OneWay}"
+                       TextWrapping="Wrap" 
+                       Padding="25,15,25,0" 
+                       Foreground="{StaticResource PrivacyFontColorBrush}"
+                       Opacity="0.8"
+                       FontSize="18"
+                       Visibility="{x:Bind VM.AdvancedInformation, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
             <TextBlock Grid.Row="2"
                        Grid.ColumnSpan="2"
-                       Text="Language"
+                       Text="{x:Bind VM.LanguagePackage.LanguageTranslation, Mode=OneWay}"
                        Style="{StaticResource TextBlockStyle}"/>
             <ComboBox Grid.Row="3"
                       Grid.ColumnSpan="2"
@@ -45,30 +55,42 @@
                       VerticalContentAlignment="Center"/>
             <TextBlock Grid.Row="4"
                        Grid.ColumnSpan="2" 
-                       Text="Name"
+                       Text="{x:Bind VM.LanguagePackage.NameTranslation, Mode=OneWay}"
                        Style="{StaticResource TextBlockStyle}"/>
             <TextBox Grid.Row="5"
                      Grid.ColumnSpan="2" 
                      Style="{StaticResource TextBoxStyle}"
                      Text="{x:Bind VM.Username, Mode=TwoWay}"/>
-            <Button Grid.Row="6"
+            <Grid Grid.Row="6" Grid.ColumnSpan="2" Padding="25,0,15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ToggleSwitch IsOn="{x:Bind VM.AdvancedInformation, Mode=TwoWay}" 
+                              OffContent="{x:Bind VM.LanguagePackage.NoTranslation, Mode=OneWay}"
+                              OnContent="{x:Bind VM.LanguagePackage.YesTranslation, Mode=OneWay}"
+                              FontSize="25" IsTextScaleFactorEnabled="True" 
+                              Foreground="{StaticResource PrivacyFontColorBrush}"/>
+                <TextBlock Grid.Column="2"
+                Text="{x:Bind VM.LanguagePackage.AdditionalInformationTranslation, Mode=OneWay}"
+                FontSize="25"
+                Foreground="{StaticResource PrivacyFontColorBrush}"
+                VerticalAlignment="Center"/>
+            </Grid>
+            <Button Grid.Row="7"
                     Grid.Column="1"
                     Style="{StaticResource ButtonStyle}"
                     HorizontalContentAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Content="Save"
-                    Click="{x:Bind VM.SaveSettings}"/>
-            <Button Grid.Row="8"
+                    Content="{x:Bind VM.LanguagePackage.SaveTranslation, Mode=OneWay}"
+                    Click="{x:Bind VM.SaveSettings}" FontSize="25"/>
+            <Button Grid.Row="9"
                     Grid.Column="0"
                     Style="{StaticResource ButtonStyle}"
                     HorizontalContentAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="Cancel"
+                    Content="{x:Bind VM.LanguagePackage.DiscardTranslation, Mode=OneWay}"
                     Click="{x:Bind VM.GoBackRequest}"/>
-        </Grid>
-        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.LoadingActive, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
-            <Image Source= "ms-appx:///Assets/start.png"
-                   Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

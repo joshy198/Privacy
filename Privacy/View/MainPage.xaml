@@ -31,17 +31,25 @@
                            Grid.ColumnSpan="2"
                       Background="{StaticResource PrivacySystemColorBrush}">
                 <TextBlock 
-                           Text="Setup"
+                           Text="{x:Bind VM.LanguagePackage.SetupTranslation, Mode=OneWay}"
                            Style="{StaticResource TextBlockHeaderStyle}"/>
                 </Grid>
+                <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="{x:Bind VM.LanguagePackage.SetupInfo, Mode=OneWay}"
+                       TextWrapping="Wrap" 
+                       Padding="25,15,25,0" 
+                       Foreground="{StaticResource PrivacyFontColorBrush}"
+                       Opacity="0.8"
+                       FontSize="18"/>
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
-                           Text="Language"
+                           Text="{x:Bind VM.LanguagePackage.LanguageTranslation, Mode=OneWay}"
                            Style="{StaticResource TextBlockStyle}"/>
                 <TextBlock Grid.Row="3"
                          Grid.ColumnSpan="2"
                          Style="{StaticResource TextBlockStyle}"
-                         Text="Pick a Language"
+                         Text="{x:Bind VM.LanguagePackage.PickLanguageTranslation, Mode=OneWay}"
                          Visibility="{x:Bind VM.LangInfoAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
                 <ComboBox Grid.Row="3"
                           Grid.ColumnSpan="2"
@@ -53,12 +61,12 @@
                           VerticalContentAlignment="Center"/>
                 <TextBlock Grid.Row="4"
                            Grid.ColumnSpan="2"
-                           Text="Name"
+                           Text="{x:Bind VM.LanguagePackage.NameTranslation, Mode=OneWay}"
                            Style="{StaticResource TextBlockStyle}"/>
                 <TextBlock Grid.Row="5"
                          Grid.ColumnSpan="2"
                          Style="{StaticResource TextBlockStyle}"
-                         Text="Enter your Name"
+                         Text="{x:Bind VM.LanguagePackage.YourNameTranslation, Mode=OneWay}"
                          Visibility="{x:Bind VM.NameInfoAvailable, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
                 <TextBox Grid.Row="5"
                          Grid.ColumnSpan="2"
@@ -70,14 +78,11 @@
                         Style="{StaticResource ButtonStyle}"
                         VerticalAlignment="Top"
                         HorizontalContentAlignment="Left"
-                        Content="Apply"
+                        Content="{x:Bind VM.LanguagePackage.ApplyTranslation, Mode=OneWay}"
                         Click="{x:Bind VM.FinishSetup}"
                         Visibility="{x:Bind VM.UserControlsEnabled, Mode=OneWay,Converter={StaticResource VisibilityConverter}}"/>
             </Grid>
         </Grid>
-        <Grid  Background="{StaticResource PrivacySystemColorBrush}" Visibility="{x:Bind VM.StartScreenVisible, Mode=OneWay,Converter={StaticResource VisibilityConverter}}">
-            <Image Source= "ms-appx:///Assets/start.png"
-                   Stretch="Fill"/>
-        </Grid>
+
     </Grid>
 </Page>

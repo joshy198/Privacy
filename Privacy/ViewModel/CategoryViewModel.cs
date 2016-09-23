@@ -22,6 +22,8 @@ namespace Privacy.ViewModel
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public Profile UserProfile { get; set; }
         public ulong SystemGameID { get; set; }
+        public LangPCK LanguagePackage { get; set; }
+        public bool AdvancedInformation { get { return mvm.AdvancedInformation; } }
         #endregion
 
         #region private variables
@@ -119,6 +121,7 @@ namespace Privacy.ViewModel
         public async void LoadData()
         {
             LoadingActive = true;
+            LanguagePackage = mvm.LanguagePackage;
             ShowMenu = false;
             SelectedGroup = -1;
             pos = 0;

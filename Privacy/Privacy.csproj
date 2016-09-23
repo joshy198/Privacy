@@ -105,12 +105,14 @@
     <Compile Include="JsonObj\JsonStat.cs" />
     <Compile Include="Model\Group.cs" />
     <Compile Include="Model\ID.cs" />
+    <Compile Include="Model\LangPCK.cs" />
     <Compile Include="Model\Language.cs" />
     <Compile Include="Common\Mode.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Profile.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\Statistic.cs" />
+    <Compile Include="Model\Version.cs" />
     <Compile Include="Services\ConcreteDataService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IStorageService.cs" />

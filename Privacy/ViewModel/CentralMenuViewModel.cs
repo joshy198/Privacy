@@ -19,6 +19,8 @@ namespace Privacy.ViewModel
         public bool ShowMenu { get; set;}
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public Profile UserProfile { get; set; }
+        public LangPCK LanguagePackage { get; set; }
+        public bool AdvancedInformation { get { return mvm.AdvancedInformation; } }
         #endregion
 
         #region private readonly variables
@@ -105,6 +107,7 @@ namespace Privacy.ViewModel
             {
                 await Task.Delay(1000);
                 UserProfile = mvm.SystemUserProfile;
+                LanguagePackage = mvm.LanguagePackage;
             }
         }
     }

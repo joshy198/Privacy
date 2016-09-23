@@ -13,12 +13,14 @@ namespace Privacy.ViewModel
     public class SettingsViewModel : ViewModelBase
     {
         #region variables
-        #region pulic variables
+        #region public variables
         public bool LoadingActive { get; set; }
         public List<Language> Languages { get; set; }
         public int SelectedLanguage { set; get; }
         public string Username { get; set; }
+        public LangPCK LanguagePackage { get; set; }
         private  Profile profile;
+        public bool AdvancedInformation { get; set; }
         #endregion
         #region private readonly variables
         private readonly INavigationService navigationService;
@@ -54,7 +56,12 @@ namespace Privacy.ViewModel
             if (profile.Name != Username)
                 await dataService.ChangeUserName(mvm.SystemUserId.Id,Username);
             if (profile.Lang.Id != Languages.ElementAt(SelectedLanguage).Id)
+            {
                 await dataService.ChangeLanguage(mvm.SystemUserId.Id, Languages.ElementAt(SelectedLanguage).Id);
+                mvm.LoadLanguagePackage();
+            }
+            if (AdvancedInformation != mvm.AdvancedInformation)
+                mvm.WriteSettings(AdvancedInformation);
             GoBackRequest();
             mvm.ReloadUserProfile();
             LoadingActive = false;
@@ -64,7 +71,9 @@ namespace Privacy.ViewModel
         /// </summary>
         public async void LoadData()
         {
+            AdvancedInformation = mvm.AdvancedInformation;
             LoadingActive = true;
+            LanguagePackage = mvm.LanguagePackage;
             SelectedLanguage = -1;
             if(Languages==null||Languages.Count==0)
             Languages = (await dataService.GetLanguages()).ToList();

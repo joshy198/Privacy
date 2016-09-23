@@ -16,7 +16,7 @@ namespace Privacy.ViewModel
 
         #region public variables
         public bool LoadingActive { get; set; }
-        public string AnswerString { get { return SelectedAmmountOfPlayers + " of them have done that!"; } }
+        public string AnswerString { get { return SelectedAmmountOfPlayers + " "+LanguagePackage.GuessText; } }
         public int MenuSize { get { return ShowMenu ? 200 : 0; } }
         public bool ShowMenu { get; set; }
         public string Mode { get; set; }
@@ -26,6 +26,8 @@ namespace Privacy.ViewModel
         public Profile UserProfile { get; set; }
         public int SelectedAmmountOfPlayers { get; set; }
         public bool isActive { get; set; }
+        public LangPCK LanguagePackage { get; set; }
+        public bool AdvancedInformation { get { return mvm.AdvancedInformation; } }
         #endregion
 
         #region private readonly variables
@@ -131,6 +133,7 @@ namespace Privacy.ViewModel
         public async void LoadData()
         {
             LoadingActive = true;
+            LanguagePackage = mvm.LanguagePackage;
             ShowMenu = false;
             NumberOfPlayers = (await dataService.CountPlayersByGameId(Common.Mode.IsClient == Mode ? jvm.SystemGameID : cvm.SystemGameID));
             UserProfile = mvm.SystemUserProfile;

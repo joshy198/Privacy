@@ -36,14 +36,14 @@ namespace Privacy.ViewModel
                 if (Common.Mode.HostStart == Mode)
                 {
                     NextAvailable = true;
-                    return "Start Game";
+                    return LanguagePackage.StartTranslation;
                 }
                 else if (Common.Mode.ClientStatistic == Mode)
-                    return "Continue";
+                    return LanguagePackage.ContinueTranslation;
                 else if (Common.Mode.HostStatistic == Mode)
                 {
                     NextAvailable = true;
-                    return "Continue";
+                    return LanguagePackage.ContinueTranslation;
                 }
                 else if (Common.Mode.HostWait == Mode)
                 {
@@ -51,10 +51,10 @@ namespace Privacy.ViewModel
                     return "Ok";
                 }
                 else if (Common.Mode.ClientWait == Mode)
-                    return "Continue";
+                    return LanguagePackage.ContinueTranslation;
                 else if (Common.Mode.IsClient == Mode)
                 {
-                    return "Start";
+                    return LanguagePackage.StartTranslation;
                 }
                 return "ERR";
             } }
@@ -64,11 +64,11 @@ namespace Privacy.ViewModel
             {
                 if (Common.Mode.HostStatistic == Mode)
                 {
-                    return "Allow Statistic";
+                    return LanguagePackage.AllowStatisticTranslation;
                 }
                 else if (Common.Mode.HostWait == Mode)
                 {
-                    return "Allow Guessing";
+                    return LanguagePackage.AllowGuessingTranslation;
                 }
                 return "ERR";
             }
@@ -79,6 +79,23 @@ namespace Privacy.ViewModel
         public Profile UserProfile { get; set; }
         public ObservableCollection<Statistic> Statistics { get; set; }
         public ObservableCollection<Player> Players { get; set; }
+        public LangPCK LanguagePackage { get; set; }
+        public string LobbyInformation
+        {
+            get
+            {
+                if (Common.Mode.HostStart == Mode|| Common.Mode.IsClient == Mode)
+                    return LanguagePackage.LobbyInfo1;//MEssage: Here you see all the players, who already joined this game. Select "Start" to get to the first question.
+                else if (Common.Mode.ClientStatistic == Mode)
+                    return LanguagePackage.LobbyInfo2;
+                else if (Common.Mode.HostWait == Mode)
+                    return LanguagePackage.LobbyHostInfo2;
+                else if (Common.Mode.ClientWait == Mode)
+                    return LanguagePackage.LobbyInfo1;
+                return "ERR";
+            }
+        }
+        public bool AdvancedInformation { get { return mvm.AdvancedInformation; } }
         #endregion
         #region private readonly variables
         private readonly INavigationService navigationService;
@@ -150,7 +167,7 @@ namespace Privacy.ViewModel
             {
                 if (Common.Mode.HostStart == Mode)
                 {
-                    PlayersListHeader = "Game ID " + cvm.SystemGameID;
+                    PlayersListHeader = LanguagePackage.GameIdTranslation+" " + cvm.SystemGameID;
                     var data = await dataService.GetPlayersInGame(cvm.SystemGameID);
                     if (Players.Count != 0)
                         foreach (var v in Players)
@@ -166,7 +183,7 @@ namespace Privacy.ViewModel
                 }
                 else if (Common.Mode.IsClient == Mode)
                 {
-                    PlayersListHeader = "Players";
+                    PlayersListHeader = LanguagePackage.PlayersTranslation;
 
                     var data = await dataService.GetPlayersInGame(jvm.SystemGameID);
                     if (Players.Count != 0)
@@ -184,7 +201,7 @@ namespace Privacy.ViewModel
                 }
                 else if (Common.Mode.ClientWait == Mode)
                 {
-                    PlayersListHeader = "Answered Players";
+                    PlayersListHeader = LanguagePackage.AnsweredPlayersTranslation;
                     NextAvailable = await dataService.IsContinueAllowed(jvm.SystemGameID);
                     var data = await dataService.GetAnsweredUsers(jvm.SystemGameID);
                     if (Players.Count != 0)
@@ -201,7 +218,7 @@ namespace Privacy.ViewModel
                 }
                 else if (Common.Mode.HostWait == Mode)
                 {
-                    PlayersListHeader = "Answered Players";
+                    PlayersListHeader = LanguagePackage.AnsweredPlayersTranslation;
                     var data = await dataService.GetAnsweredUsers(cvm.SystemGameID);
                     if (Players.Count != 0)
                         foreach (var v in Players)
@@ -230,7 +247,7 @@ namespace Privacy.ViewModel
                         if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
                             Statistics.Add(v);
                     }
-                    PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
+                    PlayersListHeader = LanguagePackage.YesVoteText+" " + Statistics.FirstOrDefault().Yesses;
                 }
                 else if (Common.Mode.HostStatistic == Mode)
                 {
@@ -246,7 +263,7 @@ namespace Privacy.ViewModel
                         if (Statistics.Where(x => x.ID == v.ID).Count() == 0)
                             Statistics.Add(v);
                     }
-                    PlayersListHeader = "Number of Yes-Votes: " + Statistics.FirstOrDefault().Yesses;
+                    PlayersListHeader = LanguagePackage.YesVoteText+" " + Statistics.FirstOrDefault().Yesses;
                 }
             }
             catch (Exception ex)
@@ -257,8 +274,8 @@ namespace Privacy.ViewModel
                     {
                         if (isActive)
                         {
-                            var dialog = new MessageDialog("Seems like the game has ended, you will be taken to the Main Menu");
-                            dialog.Title = "Notification";
+                            var dialog = new MessageDialog(LanguagePackage.LobbyMsg1);
+                            dialog.Title = LanguagePackage.NotificationTranslation;
                             dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
                             var res = await dialog.ShowAsync();
                             if ((int)res.Id == 0)
@@ -274,8 +291,8 @@ namespace Privacy.ViewModel
                     {
                         if (isActive)
                         {
-                            var dialog = new MessageDialog("Seems like the game has ended, you will be taken to the Main Menu");
-                            dialog.Title = "Notification";
+                            var dialog = new MessageDialog(LanguagePackage.LobbyMsg1);
+                            dialog.Title = LanguagePackage.NotificationTranslation;
                             dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
                             var res = await dialog.ShowAsync();
                             if ((int)res.Id == 0)
@@ -327,8 +344,8 @@ namespace Privacy.ViewModel
                     navigationService.NavigateTo(Common.Navigation.Question, Common.Mode.IsHost);
                 else
                 {
-                    var dialog = new MessageDialog("You've played through all the questions");
-                    dialog.Title = "Congratulations";
+                    var dialog = new MessageDialog(LanguagePackage.LobbyMsg2);
+                    dialog.Title = LanguagePackage.CongratulationsTranslation;
                     dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
                     var res = await dialog.ShowAsync();
                     if ((int)res.Id == 0)
@@ -394,6 +411,7 @@ namespace Privacy.ViewModel
         public async void LoadData()
         {
             LoadingActive = true;
+            LanguagePackage = mvm.LanguagePackage;
             ShowMenu = false;
             NextAvailable = false;
             UserProfile = mvm.SystemUserProfile;

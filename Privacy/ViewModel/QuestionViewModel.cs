@@ -24,6 +24,7 @@ namespace Privacy.ViewModel
         public Question Question { get; set; }
         public bool Answer { get; set; }
         public bool isActive { get; set; }
+        public LangPCK LanguagePackage { get; set; }
         #endregion
         #region private readonly variables
         private readonly INavigationService navigationService;
@@ -32,6 +33,7 @@ namespace Privacy.ViewModel
         private readonly JoinGameViewModel jvm;
         private readonly CategoryViewModel cvm;
         private readonly LobbyViewModel lvm;
+        public bool AdvancedInformation { get { return mvm.AdvancedInformation; } }
         #endregion
         #endregion
 
@@ -149,6 +151,7 @@ namespace Privacy.ViewModel
         public async void LoadData()
         {
             LoadingActive = true;
+            LanguagePackage = mvm.LanguagePackage;
             ShowMenu = false;
             mvm.ReloadUserProfile();
             UserProfile = mvm.SystemUserProfile;
